@@ -50,7 +50,7 @@ public class CameraView extends ImageView {
 
 		@Override
 		public void run() {
-			new RunStream().execute();			
+			new RunStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);			
 		}
 		
 	}
