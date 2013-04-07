@@ -10,15 +10,17 @@ import android.widget.ImageView;
 
 public class CameraView extends ImageView {
 
-	CameraStream stream;	
+	private CameraStream stream;
+	private Timer timer = new Timer();
+	private int width = 0;
+	private int height = 0;
+	private int fps = 1;
 
 	public CameraView(Context context, CameraStream stream) {
 		super(context);
-		this.stream = stream;		
-		Timer timer = new Timer();
-		int fps = 3;
+		this.stream = stream;
 		TimerTask task = new Update();
-		timer.scheduleAtFixedRate(task, 0, 1000/fps);
+		timer.schedule(task, 1000 / fps);
 	}
 
 	public CameraView(Context context) {
@@ -30,28 +32,43 @@ public class CameraView extends ImageView {
 		new RunStream().execute();
 	}
 
+	@Override
+	protected void onDetachedFromWindow() {
+		timer.cancel();
+		super.onDetachedFromWindow();
+	}
+
 	private class RunStream extends AsyncTask<Void, Void, Bitmap> {
 
 		@Override
 		protected Bitmap doInBackground(Void... params) {
-			stream.startCamera();
 			Bitmap bm = stream.getData();
 			return bm;
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap result) {
-			setImageBitmap(result);			
+			setImageBitmap(result);
+			if (result.getWidth() != width || result.getHeight() != height) {
+
+			}
 		}
 
 	}
-	
-	private class Update extends TimerTask{
+
+	private class Update extends TimerTask {
 
 		@Override
 		public void run() {
-			new RunStream().execute();			
+			new RunStream().execute();
+			TimerTask task = new Update();
+			timer.schedule(task, 1000 / fps);
 		}
-		
+
 	}
+
+	public void stop() {
+		timer.cancel();
+	}
+
 }
