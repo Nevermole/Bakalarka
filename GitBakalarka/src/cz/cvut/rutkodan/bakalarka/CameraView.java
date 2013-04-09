@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.ImageView;
+import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class CameraView extends ImageView {
 
@@ -14,13 +15,14 @@ public class CameraView extends ImageView {
 	private Timer timer = new Timer();
 	private int width = 0;
 	private int height = 0;
-	private int fps = 1;
+	private double fps = 0.5;
+	private MultilieLinearLayout ml;
 
-	public CameraView(Context context, CameraStream stream) {
+	public CameraView(Context context, CameraStream stream,
+			MultilieLinearLayout ml) {
 		super(context);
 		this.stream = stream;
-		TimerTask task = new Update();
-		timer.schedule(task, 1000 / fps);
+		this.ml = ml;
 	}
 
 	public CameraView(Context context) {
@@ -29,7 +31,16 @@ public class CameraView extends ImageView {
 	}
 
 	public void loadNewImage() {
-		new RunStream().execute();
+		new RunStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+	}
+
+	@Override
+	protected void onAttachedToWindow() {
+		TimerTask task = new Update();
+		timer.cancel();
+		timer = new Timer();
+		timer.schedule(task, Math.round(1000 / fps));
+		super.onAttachedToWindow();
 	}
 
 	@Override
@@ -49,20 +60,22 @@ public class CameraView extends ImageView {
 		@Override
 		protected void onPostExecute(Bitmap result) {
 			setImageBitmap(result);
-			if (result.getWidth() != width || result.getHeight() != height) {
-
+			if (result != null
+					&& (result.getWidth() != width || result.getHeight() != height)) {
+				width = result.getWidth();
+				height = result.getHeight();
+				ml.recreate();
 			}
 		}
-
 	}
 
 	private class Update extends TimerTask {
 
 		@Override
 		public void run() {
-			new RunStream().execute();
+			new RunStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			TimerTask task = new Update();
-			timer.schedule(task, 1000 / fps);
+			timer.schedule(task, Math.round(1000 / fps));
 		}
 
 	}

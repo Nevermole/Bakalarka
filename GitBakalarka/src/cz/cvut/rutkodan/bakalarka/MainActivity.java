@@ -3,10 +3,12 @@ package cz.cvut.rutkodan.bakalarka;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.VideoView;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class MainActivity extends Activity {
@@ -36,7 +38,7 @@ public class MainActivity extends Activity {
 			kameryURL.add("http://81.25.30.20:5001/video3.mjpg");
 		}
 		for (String string : kameryURL) {
-			CameraView camimage = new CameraView(this, new CameraStream(string));
+			CameraView camimage = new CameraView(this, new CameraStream(string), ml);
 			camimage.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -46,7 +48,7 @@ public class MainActivity extends Activity {
 			});
 			kamery.add(camimage);
 			ml.addView(camimage);
-		}
+		}		
 	}
 
 	@Override

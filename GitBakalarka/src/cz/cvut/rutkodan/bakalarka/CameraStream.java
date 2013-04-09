@@ -4,31 +4,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class CameraStream {
 	private InputStream din;
-	private URLConnection ucon;
 	private String name;
 	private URL url;
 
 	public CameraStream(String url) {
 		super();
 		try {
-			this.url = new URL(url);			 
+			this.url = new URL(url);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
-		
+
 	public Bitmap getData() {
-		try {
-			this.ucon = url.openConnection();			
-			this.din = ucon.getInputStream();
+		try {			
+			this.din = url.openStream();
 			StringBuilder fs = new StringBuilder();
 			int s = 0;
 			boolean ok = true;
@@ -69,16 +66,17 @@ public class CameraStream {
 				fs.append((char) b);
 				b = (byte) (din.read());
 			}
-			/*
-			 * for (int i = 0; i < 100000; i++) { fs.append((char)din.read()); }
-			 */
-
 			name = fs.toString();
 			din.close();
-			Bitmap bm = BitmapFactory.decodeByteArray(ab, 0, ab.length);
-			return bm;
+			Bitmap bm = BitmapFactory.decodeByteArray(ab, 0, ab.length);			
+			if (bm != null) {
+				return bm;
+			} else {
+				return getData();
+			}
 		} catch (Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();
+			return getData();
 		} finally {
 			try {
 				din.close();
@@ -86,8 +84,7 @@ public class CameraStream {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		return null;
+		}		
 	}
 
 	public String getName() {
