@@ -59,12 +59,13 @@ public class CameraView extends ImageView {
 
 		@Override
 		protected void onPostExecute(Bitmap result) {
-			setImageBitmap(result);
-			if (result != null
-					&& (result.getWidth() != width || result.getHeight() != height)) {
-				width = result.getWidth();
-				height = result.getHeight();
-				ml.recreate();
+			if (result != null) {
+				setImageBitmap(result);
+				if ((result.getWidth() != width || result.getHeight() != height)) {
+					width = result.getWidth();
+					height = result.getHeight();
+					ml.recreate();
+				}
 			}
 		}
 	}

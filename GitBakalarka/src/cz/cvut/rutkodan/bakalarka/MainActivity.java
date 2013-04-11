@@ -3,12 +3,10 @@ package cz.cvut.rutkodan.bakalarka;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.VideoView;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class MainActivity extends Activity {
