@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
 					.add("http://109.107.218.33:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
 			kameryURL
 					.add("http://85.207.84.10:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
+			
 			kameryURL.add("http://85.207.85.13:5001/video3.mjpg");
 			kameryURL.add("http://81.25.30.20:5001/video3.mjpg");
 		}

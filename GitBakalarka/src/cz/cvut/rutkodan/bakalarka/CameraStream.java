@@ -1,15 +1,19 @@
 package cz.cvut.rutkodan.bakalarka;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Properties;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class CameraStream {
-	private InputStream din;
+public class CameraStream {	
 	private String name;
 	private URL url;
 
@@ -25,49 +29,35 @@ public class CameraStream {
 
 	public Bitmap getData() {
 		Bitmap bm = null;
+		InputStream din = null;
 		try {
-			this.din = this.url.openStream();
-			StringBuilder fs = new StringBuilder();
+			din = url.openStream();			
 			int s = 0;
-			boolean ok = true;
-
-			while (ok) {
-				if (s == '-' && din.read() == '-' && din.read() == 'm') {
-					ok = false;
-				}
-				s = din.read();
-				fs.append((char) s);
-			}
-			while (s != 'L') {
-				s = din.read();
-				fs.append((char) s);
-			}
-			// din.skip(7);
-			for (int i = 0; i < 7; i++) {
-				fs.append((char) din.read());
-			}
-			int lenght = 0;
-			while (s != '\n') {
-				s = din.read();
-				fs.append((char) s);
-				if (s >= 48 && s <= 57) {
-					lenght *= 10;
-					lenght += (s - 48);
-				}
-			}
+			int s0 = 0;
+			int s1 = 0;
+			int s2 = 0;
+			int i=0;		
+			byte[] header = new byte[100];			
+			while ((s=din.read())!=216 || s0!=255) {
+				header[i]=(byte)s0;
+				i++;
+				s0=s;
+				//System.out.println(s+" "+(char)s);
+			}						
+			//System.out.println("found end of frame");
+			Properties props = new Properties();
+	        props.load(new ByteArrayInputStream(header));
+	        //System.out.println(props);
+			int lenght = Integer.parseInt((String) props.get("Content-Length"));
+			//System.out.println(lenght);
 			byte[] ab = new byte[lenght];
-			// din.read();
-			// din.read();
-			fs.append((char) din.read());
-			fs.append((char) din.read());
+			ab[0] = (byte) 255;
+			ab[1] = (byte) 216;			
 			byte b = (byte) din.read();
-			System.out.println(fs.toString());
-			for (int i = 0; i < lenght; i++) {
+			for (i = 2; i < lenght-2; i++) {
 				ab[i] = b;
-				fs.append((char) b);
 				b = (byte) (din.read());
-			}
-			name = fs.toString();
+			}		
 			bm = BitmapFactory.decodeByteArray(ab, 0, ab.length);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -86,12 +76,11 @@ public class CameraStream {
 	}
 
 	public String getName() {
-		return name;
-
+		return name;		
 	}
 }
 
-
+/*
 
 package com.demo.mjpeg.MjpegView;
 
@@ -169,3 +158,4 @@ public class MjpegInputStream extends DataInputStream {
         return BitmapFactory.decodeStream(new ByteArrayInputStream(frameData));
     }
 }
+*/
