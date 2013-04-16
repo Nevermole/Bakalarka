@@ -7,7 +7,6 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -66,7 +65,7 @@ public class MultilieLinearLayout extends LinearLayout {
 		}
 		linearLayout.addView(child);
 		views.add(child);	
-		Log.d("Bakalarka", "view added" + getMeasuredWidth());
+		//Log.d("Bakalarka", "view added" + getMeasuredWidth());
 		// super.addView(child);
 	}
 

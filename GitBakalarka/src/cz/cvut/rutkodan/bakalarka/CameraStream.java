@@ -1,13 +1,10 @@
 package cz.cvut.rutkodan.bakalarka;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 
 import android.graphics.Bitmap;
@@ -34,8 +31,6 @@ public class CameraStream {
 			din = url.openStream();			
 			int s = 0;
 			int s0 = 0;
-			int s1 = 0;
-			int s2 = 0;
 			int i=0;		
 			byte[] header = new byte[100];			
 			while ((s=din.read())!=216 || s0!=255) {
@@ -59,7 +54,7 @@ public class CameraStream {
 				b = (byte) (din.read());
 			}		
 			bm = BitmapFactory.decodeByteArray(ab, 0, ab.length);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
