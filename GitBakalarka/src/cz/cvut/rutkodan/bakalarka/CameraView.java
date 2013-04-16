@@ -15,8 +15,10 @@ public class CameraView extends ImageView {
 	private Timer timer = new Timer();
 	private int width = 0;
 	private int height = 0;
-	private double fps = 0.5;
+	private double fps = 1;
 	private MultilieLinearLayout ml;
+    private long time = 0;
+	private boolean hasFinished = true;
 
 	public CameraView(Context context, CameraStream stream,
 			MultilieLinearLayout ml) {
@@ -59,7 +61,12 @@ public class CameraView extends ImageView {
 
 		@Override
 		protected void onPostExecute(Bitmap result) {
+			hasFinished = true;
 			if (result != null) {
+				/*
+				 * long now = new Date().getTime(); System.out.println(Double
+				 * .toString(1000 / (double) (now - time))); time = now;
+				 */
 				setImageBitmap(result);
 				if ((result.getWidth() != width || result.getHeight() != height)) {
 					width = result.getWidth();
@@ -74,9 +81,15 @@ public class CameraView extends ImageView {
 
 		@Override
 		public void run() {
-			new RunStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			TimerTask task = new Update();
-			timer.schedule(task, Math.round(1000 / fps));
+			if (hasFinished) {
+				new RunStream()
+						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				timer.schedule(task, Math.round(1000 / fps));
+			} else {
+				timer.schedule(task, 100);
+			}
+
 		}
 
 	}
@@ -85,4 +98,11 @@ public class CameraView extends ImageView {
 		timer.cancel();
 	}
 
+	public double getFps() {
+		return fps;
+	}
+
+	public void setFps(double fps) {
+		this.fps = fps;
+	}
 }

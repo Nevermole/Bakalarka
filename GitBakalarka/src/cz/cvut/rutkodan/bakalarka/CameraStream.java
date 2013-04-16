@@ -1,17 +1,16 @@
 package cz.cvut.rutkodan.bakalarka;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.media.MediaCodec;
 
 public class CameraStream {	
 	private String name;
@@ -31,15 +30,15 @@ public class CameraStream {
 		Bitmap bm = null;
 		InputStream din = null;
 		try {
-			din = url.openStream();			
+			din = url.openStream();		
+			StringBuilder sb = new StringBuilder();
 			int s = 0;
 			int s0 = 0;
-			int s1 = 0;
-			int s2 = 0;
 			int i=0;		
 			byte[] header = new byte[100];			
 			while ((s=din.read())!=216 || s0!=255) {
 				header[i]=(byte)s0;
+				sb.append((char)s);
 				i++;
 				s0=s;
 				//System.out.println(s+" "+(char)s);
@@ -57,9 +56,29 @@ public class CameraStream {
 			for (i = 2; i < lenght-2; i++) {
 				ab[i] = b;
 				b = (byte) (din.read());
-			}		
-			bm = BitmapFactory.decodeByteArray(ab, 0, ab.length);
-		} catch (IOException e) {
+				sb.append(b+" ");
+			}
+			BitmapFactory.Options options = new Options();			
+			options.inMutable = true;
+			options.inPreferQualityOverSpeed = false;
+			options.outMimeType = (String) props.get("Content-Type");
+			bm = BitmapFactory.decodeByteArray(ab, 0, ab.length, options);			
+			if (bm == null){
+				sb.append("\ndone\n");
+				for (int j = 0; j < 10; j++) {
+					b = (byte) (din.read());
+					sb.append(b+" "+(char)b+",");
+				}
+				System.err.println(sb.toString());
+			} else {
+			/*	sb.append("\ndone\n");
+				for (int j = 0; j < 10; j++) {
+					b = (byte) (din.read());
+					sb.append(b+" "+(char)b+",");
+				}
+				System.out.println(sb.toString());*/
+			}
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
