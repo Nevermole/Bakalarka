@@ -15,7 +15,7 @@ public class CameraView extends ImageView {
 	private Timer timer = new Timer();
 	private int width = 0;
 	private int height = 0;
-	private double fps = 1;
+	private double fps = 0.5;
 	private MultilieLinearLayout ml;
     private long time = 0;
 	private boolean hasFinished = true;

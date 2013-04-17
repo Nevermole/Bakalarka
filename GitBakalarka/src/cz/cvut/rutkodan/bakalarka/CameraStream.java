@@ -33,11 +33,13 @@ public class CameraStream {
 			StringBuilder sb = new StringBuilder();
 			int s = 0;
 			int s0 = 0;
+
 			int i = 0;
 			byte[] header = new byte[100];
 			while ((s = din.read()) != 216 || s0 != 255) {
 				header[i] = (byte) s0;
 				sb.append((char) s);
+
 				i++;
 				s0 = s;
 				// System.out.println(s+" "+(char)s);
@@ -55,6 +57,7 @@ public class CameraStream {
 			for (i = 2; i < lenght - 2; i++) {
 				ab[i] = b;
 				b = (byte) (din.read());
+
 				sb.append(b + " ");
 			}
 			BitmapFactory.Options options = new Options();
@@ -76,6 +79,7 @@ public class CameraStream {
 				 * System.out.println(sb.toString());
 				 */
 			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

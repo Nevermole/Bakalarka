@@ -10,25 +10,21 @@
         android:id="@+id/scrollView2"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        >
+        android:layout_above="@+id/menu_bar" >
 
         <cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout
-            android:id="@+id/MultilineLinearLayout"
+            android:id="@+id/multilineLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:orientation="vertical" >
-
         </cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout>
-
     </ScrollView>
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" >
+        android:layout_height="100dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,8 +38,28 @@
                 android:layout_marginTop="11dp"
                 android:text="@string/textview"
                 android:visibility="gone" />
-
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/menu_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/background_dark" >
+
+        <ImageButton
+            android:id="@+id/add_camera_button"
+            style="@android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@color/button_background"
+            android:contentDescription="@string/add_camera"
+            android:src="@drawable/content_new" >
+            
+        </ImageButton>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -18,5 +18,13 @@ Utinam mentitum an vel, quo ei adhuc commune appetere. Luptatum recteque consect
 Elitr tacimates recusabo ut pro, at sed doming doctus. In nam nulla luptatum, ius partem quaestio no. Per esse appareat repudiare ne, aliquando vulputate reprimique nam in. Mei ex alii convenire. Te vix dicta blandit consetetur. Noluisse facilisis cu his, cu pri dicit doming inimicus, veri instructior qui ex.
 
 Vide omnesque copiosae per eu. Facilis deleniti ad sea. Qualisque expetendis mei at. Idque laudem eam te, cu sed facilisis appellantur.</string>
+    <string name="add_new_camera">Add new camera</string>
+    <string name="add_camera">Add camera</string>
+    <string name="camera_name">Název</string>
+    <string name="camera_address">Adresa</string>
+    <string name="camera_max_fps">Maximalní FPS</string>
+    <string name="camera_save">Uložit</string>
+    <string name="camera_cancel">Zavřít</string>
+    <string name="add_camera_string">Přidat kameru</string>
 
 </resources>
