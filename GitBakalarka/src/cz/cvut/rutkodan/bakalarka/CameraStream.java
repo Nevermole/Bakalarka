@@ -76,7 +76,6 @@ public class CameraStream {
 				 * System.out.println(sb.toString());
 				 */
 			}
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
