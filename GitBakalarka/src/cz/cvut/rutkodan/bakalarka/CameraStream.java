@@ -63,6 +63,7 @@ public class CameraStream {
 			BitmapFactory.Options options = new Options();
 			options.inMutable = true;
 			options.inPreferQualityOverSpeed = false;
+			options.inDither = true;
 			options.outMimeType = (String) props.get("Content-Type");
 			bm = BitmapFactory.decodeByteArray(ab, 0, ab.length, options);
 			if (bm == null) {

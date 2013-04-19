@@ -17,12 +17,14 @@ import android.widget.Toast;
 public class CameraAddActivity extends Activity {
 	private ImageView image;
 	private int width;
-	private int height; 
+	private int height;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_camera_add);
+		setContentView(R.layout.activity_camera_add);		
+		width = Math.round(200 * getResources().getDisplayMetrics().density);
+		height = Math.round(100 * getResources().getDisplayMetrics().density);
 		final EditText nazev = (EditText) findViewById(R.id.editName);
 		final EditText adressa = (EditText) findViewById(R.id.editAddress);
 		image = (ImageView) findViewById(R.id.cemera_image);
@@ -32,7 +34,7 @@ public class CameraAddActivity extends Activity {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
 					new GetImage().execute(adressa.getText().toString());
-				} 
+				}
 			}
 
 		});
@@ -68,7 +70,7 @@ public class CameraAddActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.camera_add, menu);
+		// getMenuInflater().inflate(R.menu.camera_add, menu);
 		return true;
 	}
 

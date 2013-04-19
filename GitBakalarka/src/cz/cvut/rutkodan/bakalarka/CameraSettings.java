@@ -8,7 +8,7 @@ public class CameraSettings {
 	private String address;
 	private int height;
 	private int width;
-	private double maxFPS = 5.0;
+	private double maxFPS = 5.0;	
 
 	public CameraSettings(Type type, String name, String address, int height,
 			int width, double maxFPS) {
@@ -18,7 +18,7 @@ public class CameraSettings {
 		this.address = address;
 		this.height = height;
 		this.width = width;
-		this.maxFPS = maxFPS;
+		this.maxFPS = maxFPS;		
 	}
 	
 	public String getName() {

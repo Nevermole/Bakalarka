@@ -17,14 +17,20 @@ public class CameraView extends ImageView {
 	private int height = 0;
 	private double fps = 0.5;
 	private MultilieLinearLayout ml;
-    private long time = 0;
+	private long time = 0;
 	private boolean hasFinished = true;
 
-	public CameraView(Context context, CameraStream stream,
-			MultilieLinearLayout ml) {
+	
+	public CameraView(Context context, CameraStream stream, int width,
+			int height, double fps, MultilieLinearLayout ml) {
 		super(context);
 		this.stream = stream;
+		this.width = width;
+		this.height = height;
+		this.fps = fps;
 		this.ml = ml;
+		TimerTask task = new Update();
+		timer.schedule(task, 100);
 	}
 
 	public CameraView(Context context) {
