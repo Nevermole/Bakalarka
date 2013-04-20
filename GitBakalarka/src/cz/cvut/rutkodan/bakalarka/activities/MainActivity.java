@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka;
+package cz.cvut.rutkodan.bakalarka.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,13 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import cz.cvut.rutkodan.bakalarka.CameraList;
+import cz.cvut.rutkodan.bakalarka.CameraSettings;
+import cz.cvut.rutkodan.bakalarka.CameraView;
+import cz.cvut.rutkodan.bakalarka.R;
+import cz.cvut.rutkodan.bakalarka.R.id;
+import cz.cvut.rutkodan.bakalarka.R.layout;
+import cz.cvut.rutkodan.bakalarka.R.menu;
 import cz.cvut.rutkodan.bakalarka.connection.Type;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
@@ -17,14 +24,23 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final Intent intent = new Intent(this, CameraAddActivity.class);
+		final Intent intentAddCamera = new Intent(this, CameraAddActivity.class);
 		setContentView(R.layout.activity_main);
-		ImageButton imageButton = (ImageButton) findViewById(R.id.add_camera_button);
+		ImageButton imageButton = (ImageButton) findViewById(R.id.button_add_camera);
 		imageButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				startActivityForResult(intent, 0);
+				startActivityForResult(intentAddCamera, 0);
+			}
+		});
+		final Intent intentManageCameras = new Intent(this, ManageCamerasActivity.class);
+		imageButton = (ImageButton) findViewById(R.id.button_manage_cameras);
+		imageButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(intentManageCameras, 1);
 			}
 		});
 		kamery = new CameraList(this);
@@ -46,9 +62,7 @@ public class MainActivity extends Activity {
 		// kameryURL.add("http://85.207.85.13:5001/video3.mjpg");
 		// kameryURL.add("http://81.25.30.20:5001/video3.mjpg");
 		for (CameraSettings cam : kamery.getAllCameras()) {
-			CameraView cameraView = new CameraView(this, new CameraStream(
-					cam.getAddress()), cam.getWidth(), cam.getHeight(),
-					cam.getMaxFPS(), ml);
+			CameraView cameraView = new CameraView(this, cam, ml);
 			/*
 			 * camimage.setOnClickListener(new OnClickListener() {
 			 * 
@@ -69,9 +83,7 @@ public class MainActivity extends Activity {
 								"Height", 0), data.getIntExtra("Width", 0),
 						data.getDoubleExtra("FPS", 5.0));
 				kamery.add(cam);
-				CameraView cameraView = new CameraView(this, new CameraStream(
-						cam.getAddress()), cam.getWidth(), cam.getHeight(),
-						cam.getMaxFPS(), ml);
+				CameraView cameraView = new CameraView(this, cam, ml);
 				ml.addView(cameraView);
 
 			}

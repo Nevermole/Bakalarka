@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true" android:drawable="@drawable/button_clicked"></item>
-    <item android:drawable="@drawable/button_not_clicked"></item>
+    <item android:drawable="@android:color/background_dark"></item>
 
 </selector>

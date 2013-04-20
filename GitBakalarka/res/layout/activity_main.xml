@@ -41,7 +41,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/menu_bar"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
@@ -51,15 +51,34 @@
         android:background="@android:color/background_dark" >
 
         <ImageButton
-            android:id="@+id/add_camera_button"
+            android:id="@+id/button_add_camera"
             style="@android:attr/borderlessButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@color/button_background"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:background="@color/button_background_dark"
             android:contentDescription="@string/add_camera"
-            android:src="@drawable/content_new" >
-            
-        </ImageButton>
-    </LinearLayout>
+            android:src="@drawable/content_new" />
+
+        <ImageButton
+            android:id="@+id/button_manage_cameras"
+            style="@android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignBaseline="@+id/button_add_camera"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/button_add_camera"
+            android:background="@color/button_background_dark"
+            android:contentDescription="@string/add_camera"
+            android:src="@drawable/collections_view_as_list" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

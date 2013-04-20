@@ -148,14 +148,16 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:background="@android:color/background_dark" >
+        android:background="@android:color/darker_gray" >
 
         <Button
             android:id="@+id/button_add_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
             android:layout_weight="1"
-            android:background="@color/button_background"
+            android:background="@color/button_background_dark"
             android:text="@string/camera_save"
             android:textColor="@android:color/white" />
 
@@ -163,10 +165,13 @@
             android:id="@+id/button_add_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
             android:layout_weight="1"
-            android:background="@color/button_background"
+            android:background="@color/button_background_dark"
             android:text="@string/camera_cancel"
             android:textColor="@android:color/white" />
+
     </LinearLayout>
 
 </RelativeLayout>

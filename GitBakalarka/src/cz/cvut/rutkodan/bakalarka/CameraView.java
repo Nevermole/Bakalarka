@@ -5,6 +5,10 @@ import java.util.TimerTask;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
@@ -12,24 +16,33 @@ import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 public class CameraView extends ImageView {
 
 	private CameraStream stream;
-	private Timer timer = new Timer();
+	private Timer timer;
 	private int width = 0;
 	private int height = 0;
 	private double fps = 0.5;
-	private MultilieLinearLayout ml;
+	private MultilieLinearLayout ml;	
 	private long time = 0;
 	private boolean hasFinished = true;
 
 	
-	public CameraView(Context context, CameraStream stream, int width,
-			int height, double fps, MultilieLinearLayout ml) {
+	public CameraView(Context context, CameraSettings cameraSettings, MultilieLinearLayout ml) {
 		super(context);
-		this.stream = stream;
-		this.width = width;
-		this.height = height;
-		this.fps = fps;
+		this.stream = new CameraStream(cameraSettings.getAddress());
+		this.width = cameraSettings.getWidth();
+		this.height = cameraSettings.getHeight();
+		//this.fps = fps;
 		this.ml = ml;
+		Bitmap bm = Bitmap.createBitmap(width,height,Config.ARGB_8888);
+		Canvas c = new Canvas(bm);
+		c.drawColor(Color.BLACK);
+		Paint p = new Paint();
+		p.setStyle(Paint.Style.FILL);		
+		p.setColor(Color.WHITE);
+		p.setTextSize(25);
+		c.drawText(cameraSettings.getName(),50, 50, p);
+		setImageBitmap(bm);
 		TimerTask task = new Update();
+		timer = new Timer();
 		timer.schedule(task, 100);
 	}
 
@@ -88,6 +101,7 @@ public class CameraView extends ImageView {
 		@Override
 		public void run() {
 			TimerTask task = new Update();
+			timer = new Timer();
 			if (hasFinished) {
 				new RunStream()
 						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

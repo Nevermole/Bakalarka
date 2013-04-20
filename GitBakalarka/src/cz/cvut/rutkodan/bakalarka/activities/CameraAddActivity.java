@@ -1,5 +1,9 @@
-package cz.cvut.rutkodan.bakalarka;
+package cz.cvut.rutkodan.bakalarka.activities;
 
+import cz.cvut.rutkodan.bakalarka.CameraStream;
+import cz.cvut.rutkodan.bakalarka.R;
+import cz.cvut.rutkodan.bakalarka.R.id;
+import cz.cvut.rutkodan.bakalarka.R.layout;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,8 +27,8 @@ public class CameraAddActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera_add);		
-		width = Math.round(200 * getResources().getDisplayMetrics().density);
-		height = Math.round(100 * getResources().getDisplayMetrics().density);
+		width = (int) Math.round((getResources().getDisplayMetrics().widthPixels/2.0) * getResources().getDisplayMetrics().density);
+		height = (int) Math.round((getResources().getDisplayMetrics().heightPixels/4.0) * getResources().getDisplayMetrics().density);
 		final EditText nazev = (EditText) findViewById(R.id.editName);
 		final EditText adressa = (EditText) findViewById(R.id.editAddress);
 		image = (ImageView) findViewById(R.id.cemera_image);
