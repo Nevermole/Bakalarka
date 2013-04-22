@@ -26,7 +26,13 @@ Vide omnesque copiosae per eu. Facilis deleniti ad sea. Qualisque expetendis mei
     <string name="camera_save">Uložit</string>
     <string name="camera_cancel">Zavřít</string>
     <string name="add_camera_string">Přidat kameru</string>
-    <string name="title_activity_manage_cameras">ManageCamerasActivity</string>
+    <string name="title_activity_manage_cameras">Správa kamer</string>
     <string name="deleted">Smazáno</string>
+    <string name="string_export">Export</string>
+    <string name="string_import">Import</string>
+    <string name="zero_mb">0.0 MB</string>
+    <string name="camera_exists">Název nelze použít</string>
+    <string name="cams_imported">Kamery byly importovány</string>
+    <string name="cams_exported">Uloženo do</string>
 
 </resources>

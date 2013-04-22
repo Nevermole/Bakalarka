@@ -16,10 +16,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import cz.cvut.rutkodan.bakalarka.CameraList;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
-import cz.cvut.rutkodan.bakalarka.CameraView;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.RequestCodes;
 import cz.cvut.rutkodan.bakalarka.connection.Type;
+import cz.cvut.rutkodan.bakalarka.ui.CameraView;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class MainActivity extends Activity {
@@ -58,40 +58,34 @@ public class MainActivity extends Activity {
 		});
 		kamery = new CameraList(this);
 		ml = (MultilieLinearLayout) findViewById(R.id.multilineLinearLayout);
-		kamery.loadFromDB();
-		// kameryURL
-		// .add("http://160.218.184.211:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL
-		// .add("http://89.24.105.222:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL
-		// .add("http://89.24.105.226:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL
-		// .add("http://160.218.189.228:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL
-		// .add("http://109.107.218.33:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL
-		// .add("http://85.207.84.10:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-
+		fillLayout();
+		// kameryURL.add("http://160.218.184.211:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
+		// kameryURL.add("http://89.24.105.222:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
+		// kameryURL.add("http://89.24.105.226:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
+		// kameryURL.add("http://160.218.189.228:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
+		// kameryURL.add("http://109.107.218.33:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
+		// kameryURL.add("http://85.207.84.10:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
 		// kameryURL.add("http://85.207.85.13:5001/video3.mjpg");
 		// kameryURL.add("http://81.25.30.20:5001/video3.mjpg");
-		for (CameraSettings cam : kamery.getAllCameras()) {
-			CameraView cameraView = new CameraView(this, cam, ml);
-			/*
-			 * camimage.setOnClickListener(new OnClickListener() {
-			 * 
-			 * @Override public void onClick(View v) { ((CameraView)
-			 * v).loadNewImage(); } });
-			 */
-			ml.addView(cameraView);
-		}		
+
 		Timer updater = new Timer();
 		updater.scheduleAtFixedRate(new UpdateDataCounter(), 1000, 1000);
+	}
+
+	private void fillLayout() {		
+		ml.removeAllViews();
+		kamery.loadFromDB();
+		for (CameraSettings cam : kamery.getAllCameras()) {
+			CameraView cameraView = new CameraView(this, cam, ml);
+			ml.addView(cameraView);
+		}
 	}
 
 	public void updateData() {
 		TextView dataView = (TextView) findViewById(R.id.data_view);
 		String used = Double.toString(dataUsed / 1000000.0);
-		dataView.setText((used.length()>3?used.substring(0, 3):used)+" MB");
+		dataView.setText((used.length() > 3 ? used.substring(0, 3) : used)
+				+ " MB");
 		System.out.println("updated");
 	}
 
@@ -108,7 +102,12 @@ public class MainActivity extends Activity {
 				kamery.add(cam);
 				CameraView cameraView = new CameraView(this, cam, ml);
 				ml.addView(cameraView);
-
+			}
+		} else if (requestCode == RequestCodes.MANAGE_CAMERAS.getNumber()) {
+			if (resultCode == RESULT_OK) {
+				if (data.getBooleanExtra("Edited", false)) {
+					fillLayout();
+				}
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -120,15 +119,17 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
+
 	@SuppressLint("HandlerLeak")
-	private class UpdateHandler extends Handler{
+	private class UpdateHandler extends Handler {
 
 		@Override
 		public void handleMessage(Message msg) {
 			updateData();
 		}
-		
+
 	}
+
 	private class UpdateDataCounter extends TimerTask {
 
 		@Override

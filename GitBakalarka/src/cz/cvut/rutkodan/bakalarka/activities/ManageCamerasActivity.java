@@ -1,33 +1,54 @@
 package cz.cvut.rutkodan.bakalarka.activities;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
+import java.util.ArrayList;
+
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
+import android.view.View.OnTouchListener;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import cz.cvut.rutkodan.bakalarka.CameraDatabase;
 import cz.cvut.rutkodan.bakalarka.CameraList;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
+import cz.cvut.rutkodan.bakalarka.DeleteAndAnimate;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.RequestCodes;
 import cz.cvut.rutkodan.bakalarka.connection.Type;
 
-public class ManageCamerasActivity extends Activity {
+public class ManageCamerasActivity extends Activity implements OnTouchListener {
 	private CameraDatabase database;
 	private LinearLayout linearlayout;
 	private boolean edited = false;
 	private CameraList cameraList;
+	private ArrayList<DeleteAndAnimate> toDelete = new ArrayList<DeleteAndAnimate>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +57,73 @@ public class ManageCamerasActivity extends Activity {
 		database = new CameraDatabase(this);
 		cameraList = new CameraList(this);
 		fillCameras();
+		Button buttonImport = (Button) findViewById(R.id.button_import);
+		buttonImport.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				try {
+					ObjectInputStream in = new ObjectInputStream(
+							new FileInputStream(new File(Environment
+									.getExternalStorageDirectory(),
+									"Cameras.db")));
+					CameraSettings[] list = (CameraSettings[]) in.readObject();
+					in.close();
+					cameraList.add(list);
+					Toast.makeText(getApplicationContext(),
+							getResources().getString(R.string.cams_imported),
+							Toast.LENGTH_LONG).show();
+					fillCameras();
+					edited = true;
+				} catch (StreamCorruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		Button buttonExport = (Button) findViewById(R.id.button_export);
+		buttonExport.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				try {
+					File path = new File(Environment
+							.getExternalStorageDirectory(), "Cameras.db");
+					ObjectOutputStream out = new ObjectOutputStream(
+							new FileOutputStream(path));
+					out.writeObject(cameraList.getAllCameras());
+					out.flush();
+					out.close();
+					Toast.makeText(
+							getApplicationContext(),
+							getResources().getString(R.string.cams_exported)
+									+ " " + path.getAbsolutePath(),
+							Toast.LENGTH_LONG).show();
+				} catch (StreamCorruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		ScrollView scrollView = (ScrollView) findViewById(R.id.manage_scroll);
+		scrollView.setOnTouchListener(this);
+		buttonExport.setOnTouchListener(this);
+		buttonImport.setOnTouchListener(this);
 	}
 
 	private void fillCameras() {
@@ -120,13 +208,31 @@ public class ManageCamerasActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				layout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-				textView.setText(getResources().getString(R.string.deleted));
-				buttonEdit.setVisibility(View.GONE);
-				buttonDelete.setImageDrawable(getResources().getDrawable(R.drawable.content_new));				
-				/*database.removeCameraFromDB(cameraSettings.getName(),
-						cameraSettings.getAddress());
-				linearlayout.removeView(layout);*/
+				if (textView.getText().equals(cameraSettings.getName())) {
+					layout.setBackgroundColor(getResources().getColor(
+							android.R.color.transparent));
+					textView.setText(getResources().getString(R.string.deleted));
+					textView.setTextColor(getResources().getColor(
+							android.R.color.background_light));
+					buttonEdit.setVisibility(View.GONE);
+					buttonDelete.setImageDrawable(getResources().getDrawable(
+							R.drawable.content_undo_dark));
+					buttonDelete.setBackground(getResources().getDrawable(
+							R.color.button_background_transparent));
+					toDelete.add(new DeleteAndAnimate(layout, cameraSettings));
+				} else {
+					toDelete.remove(new DeleteAndAnimate(layout, cameraSettings));
+					layout.setBackground(getResources().getDrawable(
+							R.color.button_background_light));
+					textView.setText(cameraSettings.getName());
+					textView.setTextColor(getResources().getColor(
+							android.R.color.black));
+					buttonEdit.setVisibility(View.VISIBLE);
+					buttonDelete.setImageDrawable(getResources().getDrawable(
+							R.drawable.collections_delete));
+					buttonDelete.setBackground(getResources().getDrawable(
+							R.color.button_background_light));
+				}
 			}
 		});
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -142,6 +248,67 @@ public class ManageCamerasActivity extends Activity {
 		rlp.addRule(RelativeLayout.CENTER_VERTICAL);
 		layout.addView(buttonDelete, rlp);
 		return layout;
+	}
+
+	private void delAndAnim(final DeleteAndAnimate data) {
+		edited = true;
+		database.removeCameraFromDB(data.getSettings());
+		final RelativeLayout rel = data.getLayout();
+		ValueAnimator va = ValueAnimator.ofInt(data.getLayout().getHeight(), 0);
+		va.addUpdateListener(new AnimatorUpdateListener() {
+
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				int value = (Integer) animation.getAnimatedValue();
+				System.out.println(value);
+				rel.getLayoutParams().height = value;
+				rel.requestLayout();
+				linearlayout.requestLayout();
+			}
+		});
+		va.addListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationStart(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				linearlayout.removeView(data.getLayout());
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+			}
+		});
+		va.setInterpolator(new AccelerateInterpolator());
+		va.setDuration(250);
+		va.start();
+	}
+
+	@Override
+	protected void onDestroy() {
+		while (!toDelete.isEmpty()) {
+			delAndAnim(toDelete.remove(0));
+		}
+		super.onDestroy();
+	}
+
+	@Override
+	public void onBackPressed() {
+		while (!toDelete.isEmpty()) {
+			delAndAnim(toDelete.remove(0));
+		}
+		edited = true;	
+		Intent result = new Intent();
+		result.putExtra("Edited", edited);
+		setResult(RESULT_OK, result);
+		finish();
+		super.onBackPressed();
 	}
 
 	@Override
@@ -168,6 +335,14 @@ public class ManageCamerasActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.manage_cameras, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		while (!toDelete.isEmpty()) {
+			delAndAnim(toDelete.remove(0));
+		}
+		return false;
 	}
 
 }

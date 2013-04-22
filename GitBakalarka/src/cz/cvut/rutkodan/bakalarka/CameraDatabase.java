@@ -2,12 +2,11 @@ package cz.cvut.rutkodan.bakalarka;
 
 import java.util.ArrayList;
 
-import cz.cvut.rutkodan.bakalarka.connection.Type;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import cz.cvut.rutkodan.bakalarka.connection.Type;
 
 public class CameraDatabase {
 
@@ -25,7 +24,7 @@ public class CameraDatabase {
 
 	public CameraDatabase(Context context) {
 		databaseHelper = new CameraDatabaseHelper(context);
-		
+
 	}
 
 	public long addCameraToDB(String name, String address, int height,
@@ -86,6 +85,14 @@ public class CameraDatabase {
 				new String[] { oldName, oldAddress });
 		database.close();
 		System.out.println("renamed");
+	}
 
+	public void removeCameraFromDB(CameraSettings settings) {
+		String name = settings.getName();
+		String address = settings.getAddress();
+		database = databaseHelper.getWritableDatabase();
+		database.delete(TABLE, NAME + "=? and " + ADDRESS + "=?", new String[] {
+				name, address });
+		database.close();
 	}
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import cz.cvut.rutkodan.bakalarka.connection.Type;
 
 public class CameraList {
+
 	private ArrayList<CameraSettings> cameras;
 	private CameraDatabase cameraDatabase;
 
@@ -18,6 +19,18 @@ public class CameraList {
 	public void add(CameraSettings camera) {
 		cameras.add(camera);
 		saveCameraToDatabase(camera);
+	}
+
+	public void add(CameraSettings[] cameras) {
+		if (cameras != null) {
+			for (CameraSettings cameraSettings : cameras) {
+				if (!this.cameras.contains(cameraSettings)) {
+					this.cameras.add(cameraSettings);
+					saveCameraToDatabase(cameraSettings);
+				}
+			}
+		}
+
 	}
 
 	public void add(Type type, String name, String address, int height,
@@ -40,12 +53,12 @@ public class CameraList {
 	}
 
 	public void loadFromDB() {
-		if(!cameras.isEmpty()){
-			cameras.clear();
-		}
+		cameras.clear();
 		cameras = cameraDatabase.getAllCamerasFromDB();
 	}
 
-	
-
+	public boolean contains(String name) {
+		cameras.contains(new CameraSettings(name));
+		return false;
+	}
 }

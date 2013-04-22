@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka;
+package cz.cvut.rutkodan.bakalarka.ui;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,8 +11,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
-import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
+import cz.cvut.rutkodan.bakalarka.CameraSettings;
+import cz.cvut.rutkodan.bakalarka.CameraStream;
 
 public class CameraView extends ImageView {
 
@@ -34,9 +36,10 @@ public class CameraView extends ImageView {
 		this.stream = new CameraStream(cameraSettings.getAddress());
 		this.width = cameraSettings.getWidth();
 		this.height = cameraSettings.getHeight();
+		setLayoutParams(new LayoutParams(width, height));
 		// this.fps = fps;
 		this.ml = ml;
-		Bitmap bm = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		Bitmap bm = Bitmap.createBitmap(width, height, Config.ARGB_8888);		
 		Canvas c = new Canvas(bm);
 		c.drawColor(Color.BLACK);
 		Paint p = new Paint();
@@ -127,6 +130,7 @@ public class CameraView extends ImageView {
 				if ((result.getWidth() != width || result.getHeight() != height)) {
 					width = result.getWidth();
 					height = result.getHeight();
+					setLayoutParams(new LayoutParams(width, height));
 					ml.recreate();
 				}
 			} else {

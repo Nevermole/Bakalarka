@@ -62,7 +62,7 @@
             android:layout_gravity="right"
             android:background="@color/button_background_dark"
             android:contentDescription="@string/add_camera"
-            android:src="@drawable/content_new" />
+            android:src="@drawable/content_new_dark" />
 
         <ImageButton
             android:id="@+id/button_manage_cameras"
@@ -86,7 +86,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:text="Medium Text"
+            android:text="@string/zero_mb"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
 

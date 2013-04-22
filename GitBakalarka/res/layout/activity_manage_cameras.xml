@@ -1,17 +1,60 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ScrollView1"
+    android:id="@+id/menu_relative"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ManageCamerasActivity" >
 
-    <LinearLayout
-        android:id="@+id/manage_list"
+    <ScrollView
+        android:id="@+id/manage_scroll"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@android:color/darker_gray"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/menu_manage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
 
+        <LinearLayout
+            android:id="@+id/manage_list"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/menu_manage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/darker_gray" >
+
+        <Button
+            android:id="@+id/button_import"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:background="@color/button_background_dark"
+            android:text="@string/string_import"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/button_export"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:background="@color/button_background_dark"
+            android:text="@string/string_export"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>

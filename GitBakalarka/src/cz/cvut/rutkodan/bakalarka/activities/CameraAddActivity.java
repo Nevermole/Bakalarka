@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import cz.cvut.rutkodan.bakalarka.CameraList;
 import cz.cvut.rutkodan.bakalarka.CameraStream;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.RequestCodes;
@@ -69,17 +70,23 @@ public class CameraAddActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent result = new Intent();
-				result.putExtra("Name", nazev.getText().toString());
-				result.putExtra("Address", adressa.getText().toString());
-				result.putExtra("FPS",
-						Double.parseDouble(fps.getText().toString()));
-				result.putExtra("Width", width);
-				result.putExtra("Height", height);
-				result.putExtra("OldName", oldName);
-				result.putExtra("OldAddress", oldAddress);
-				setResult(RESULT_OK, result);
-				finish();
+				CameraList list = new CameraList(getApplicationContext());
+
+				if (list.contains(nazev.getText().toString())) {
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.camera_exists), Toast.LENGTH_LONG).show();
+				} else {
+					Intent result = new Intent();
+					result.putExtra("Name", nazev.getText().toString());
+					result.putExtra("Address", adressa.getText().toString());
+					result.putExtra("FPS",
+							Double.parseDouble(fps.getText().toString()));
+					result.putExtra("Width", width);
+					result.putExtra("Height", height);
+					result.putExtra("OldName", oldName);
+					result.putExtra("OldAddress", oldAddress);
+					setResult(RESULT_OK, result);
+					finish();
+				}
 			}
 		});
 		Button cancel = (Button) findViewById(R.id.button_add_cancel);
@@ -89,7 +96,6 @@ public class CameraAddActivity extends Activity {
 			public void onClick(View v) {
 				setResult(RESULT_CANCELED);
 				finish();
-
 			}
 		});
 	}

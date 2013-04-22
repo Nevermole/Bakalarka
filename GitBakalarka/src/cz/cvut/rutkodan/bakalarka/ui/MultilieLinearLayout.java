@@ -2,9 +2,7 @@ package cz.cvut.rutkodan.bakalarka.ui;
 
 import java.util.ArrayList;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -43,8 +41,7 @@ public class MultilieLinearLayout extends LinearLayout {
 			addView(views.remove(0));
 		}
 	}
-	
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+		
 	@Override
 	public void addView(View child) {
 		if (lines.isEmpty()) {
@@ -54,10 +51,13 @@ public class MultilieLinearLayout extends LinearLayout {
 			lines.add(linearLayout);
 		}
 		linearLayout.measure(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
+				LayoutParams.WRAP_CONTENT);		
 		DisplayMetrics displayMetrics = context.getResources()
 				.getDisplayMetrics();
-		if (linearLayout.getMeasuredWidth() + child.getWidth() > displayMetrics.widthPixels) {
+		System.out.println( displayMetrics.widthPixels);
+		System.out.println(linearLayout.getWidth());
+		System.out.println(child.getWidth());
+		if (linearLayout.getMeasuredWidth() + child.getMeasuredWidth() > displayMetrics.widthPixels) {
 			linearLayout = new LinearLayout(context);
 			linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 			super.addView(linearLayout);
