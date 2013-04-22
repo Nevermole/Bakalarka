@@ -43,7 +43,7 @@ public class MultilieLinearLayout extends LinearLayout {
 			addView(views.remove(0));
 		}
 	}
-
+	
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	@Override
 	public void addView(View child) {

@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import cz.cvut.rutkodan.bakalarka.activities.MainActivity;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -21,7 +23,7 @@ public class CameraStream {
 			this.url = new URL(url);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
@@ -54,6 +56,7 @@ public class CameraStream {
 			ab[0] = (byte) 255;
 			ab[1] = (byte) 216;
 			byte b = (byte) din.read();
+			MainActivity.dataUsed += i + lenght;
 			for (i = 2; i < lenght - 2; i++) {
 				ab[i] = b;
 				b = (byte) (din.read());
@@ -83,7 +86,7 @@ public class CameraStream {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if (din != null) {

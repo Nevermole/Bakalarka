@@ -2,42 +2,60 @@ package cz.cvut.rutkodan.bakalarka.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.ViewGroup.MarginLayoutParams;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import cz.cvut.rutkodan.bakalarka.CameraDatabase;
 import cz.cvut.rutkodan.bakalarka.CameraList;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.R;
+import cz.cvut.rutkodan.bakalarka.RequestCodes;
+import cz.cvut.rutkodan.bakalarka.connection.Type;
 
 public class ManageCamerasActivity extends Activity {
+	private CameraDatabase database;
+	private LinearLayout linearlayout;
+	private boolean edited = false;
+	private CameraList cameraList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_cameras);
-		CameraList cameraList = new CameraList(this);
-		cameraList.loadFromDB();
-		LinearLayout layout = (LinearLayout) findViewById(R.id.manage_list);
-		for (CameraSettings cs : cameraList.getAllCameras()) {
-			layout.addView(createRow(cs));
-		}
+		database = new CameraDatabase(this);
+		cameraList = new CameraList(this);
+		fillCameras();
+	}
 
+	private void fillCameras() {
+		cameraList.loadFromDB();
+		linearlayout = (LinearLayout) findViewById(R.id.manage_list);
+		linearlayout.removeAllViews();
+		for (CameraSettings cs : cameraList.getAllCameras()) {
+			linearlayout.addView(createRow(cs));
+		}
 	}
 
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
-	private RelativeLayout createRow(CameraSettings cameraSettings) {
-		RelativeLayout layout = new RelativeLayout(this);
-		TextView textView = new TextView(this);
-		ImageButton buttonEdit = new ImageButton(this);
-		ImageButton buttonDelete = new ImageButton(this);
+	private RelativeLayout createRow(final CameraSettings cameraSettings) {
+		final RelativeLayout layout = new RelativeLayout(this);
+		// layout.setClickable(true);
+
+		final TextView textView = new TextView(this);
+		final ImageButton buttonEdit = new ImageButton(this);
+		final ImageButton buttonDelete = new ImageButton(this);
 		buttonEdit.setId(buttonEdit.hashCode());
 		buttonDelete.setId(buttonDelete.hashCode());
 
@@ -58,12 +76,29 @@ public class ManageCamerasActivity extends Activity {
 		rlp.addRule(RelativeLayout.CENTER_VERTICAL);
 		rlp.setMargins(20, 0, 0, 0);
 		rlp.addRule(RelativeLayout.LEFT_OF, buttonEdit.getId());
+		textView.setClickable(false);
 		layout.addView(textView, rlp);
 
 		buttonEdit.setImageDrawable(getResources().getDrawable(
 				R.drawable.collections_edit));
 		buttonEdit.setScaleType(ScaleType.FIT_CENTER);
 		buttonEdit.setAdjustViewBounds(true);
+		buttonEdit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(),
+						CameraAddActivity.class);
+				i.putExtra("request", RequestCodes.EDIT_CAMERA);
+				i.putExtra("Name", cameraSettings.getName());
+				i.putExtra("Address", cameraSettings.getAddress());
+				i.putExtra("FPS", cameraSettings.getMaxFPS());
+				i.putExtra("Width", cameraSettings.getWidth());
+				i.putExtra("Height", cameraSettings.getHeight());
+				startActivityForResult(i, RequestCodes.EDIT_CAMERA.getNumber());
+
+			}
+		});
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			buttonEdit.setBackground(getResources().getDrawable(
 					R.color.button_background_light));
@@ -81,6 +116,19 @@ public class ManageCamerasActivity extends Activity {
 				R.drawable.collections_delete));
 		buttonDelete.setScaleType(ScaleType.FIT_CENTER);
 		buttonDelete.setAdjustViewBounds(true);
+		buttonDelete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				layout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+				textView.setText(getResources().getString(R.string.deleted));
+				buttonEdit.setVisibility(View.GONE);
+				buttonDelete.setImageDrawable(getResources().getDrawable(R.drawable.content_new));				
+				/*database.removeCameraFromDB(cameraSettings.getName(),
+						cameraSettings.getAddress());
+				linearlayout.removeView(layout);*/
+			}
+		});
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			buttonDelete.setBackground(getResources().getDrawable(
 					R.color.button_background_light));
@@ -94,6 +142,25 @@ public class ManageCamerasActivity extends Activity {
 		rlp.addRule(RelativeLayout.CENTER_VERTICAL);
 		layout.addView(buttonDelete, rlp);
 		return layout;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RequestCodes.EDIT_CAMERA.getNumber()) {
+			if (resultCode == RESULT_OK) {
+				CameraSettings cam = new CameraSettings(Type.HTTP,
+						data.getStringExtra("Name"),
+						data.getStringExtra("Address"), data.getIntExtra(
+								"Height", 0), data.getIntExtra("Width", 0),
+						data.getDoubleExtra("FPS", 5.0));
+
+				database.updateCamera(data.getStringExtra("OldName"),
+						data.getStringExtra("OldAddress"), cam);
+				edited = true;
+				fillCameras();
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override

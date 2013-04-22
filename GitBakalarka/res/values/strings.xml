@@ -27,5 +27,6 @@ Vide omnesque copiosae per eu. Facilis deleniti ad sea. Qualisque expetendis mei
     <string name="camera_cancel">Zavřít</string>
     <string name="add_camera_string">Přidat kameru</string>
     <string name="title_activity_manage_cameras">ManageCamerasActivity</string>
+    <string name="deleted">Smazáno</string>
 
 </resources>

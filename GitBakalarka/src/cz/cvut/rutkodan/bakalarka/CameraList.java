@@ -40,7 +40,12 @@ public class CameraList {
 	}
 
 	public void loadFromDB() {
+		if(!cameras.isEmpty()){
+			cameras.clear();
+		}
 		cameras = cameraDatabase.getAllCamerasFromDB();
 	}
+
+	
 
 }

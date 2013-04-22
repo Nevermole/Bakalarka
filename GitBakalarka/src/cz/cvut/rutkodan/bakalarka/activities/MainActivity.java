@@ -1,51 +1,64 @@
 package cz.cvut.rutkodan.bakalarka.activities;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import cz.cvut.rutkodan.bakalarka.CameraList;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.CameraView;
 import cz.cvut.rutkodan.bakalarka.R;
-import cz.cvut.rutkodan.bakalarka.R.id;
-import cz.cvut.rutkodan.bakalarka.R.layout;
-import cz.cvut.rutkodan.bakalarka.R.menu;
+import cz.cvut.rutkodan.bakalarka.RequestCodes;
 import cz.cvut.rutkodan.bakalarka.connection.Type;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class MainActivity extends Activity {
 	private static CameraList kamery;
 	private MultilieLinearLayout ml;
+	private UpdateHandler handler = new UpdateHandler();
+	public static long dataUsed = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		final Intent intentAddCamera = new Intent(this, CameraAddActivity.class);
+		intentAddCamera.putExtra("request", RequestCodes.ADD_NEW_CAMERA);
+
 		setContentView(R.layout.activity_main);
 		ImageButton imageButton = (ImageButton) findViewById(R.id.button_add_camera);
 		imageButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				startActivityForResult(intentAddCamera, 0);
+				startActivityForResult(intentAddCamera,
+						RequestCodes.ADD_NEW_CAMERA.getNumber());
 			}
 		});
-		final Intent intentManageCameras = new Intent(this, ManageCamerasActivity.class);
+		final Intent intentManageCameras = new Intent(this,
+				ManageCamerasActivity.class);
 		imageButton = (ImageButton) findViewById(R.id.button_manage_cameras);
 		imageButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				startActivityForResult(intentManageCameras, 1);
+				startActivityForResult(intentManageCameras,
+						RequestCodes.MANAGE_CAMERAS.getNumber());
 			}
 		});
 		kamery = new CameraList(this);
 		ml = (MultilieLinearLayout) findViewById(R.id.multilineLinearLayout);
-		kamery.loadFromDB();		
+		kamery.loadFromDB();
 		// kameryURL
 		// .add("http://160.218.184.211:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
 		// kameryURL
@@ -70,13 +83,23 @@ public class MainActivity extends Activity {
 			 * v).loadNewImage(); } });
 			 */
 			ml.addView(cameraView);
-		}
+		}		
+		Timer updater = new Timer();
+		updater.scheduleAtFixedRate(new UpdateDataCounter(), 1000, 1000);
+	}
+
+	public void updateData() {
+		TextView dataView = (TextView) findViewById(R.id.data_view);
+		String used = Double.toString(dataUsed / 1000000.0);
+		dataView.setText((used.length()>3?used.substring(0, 3):used)+" MB");
+		System.out.println("updated");
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 0) {
+		if (requestCode == RequestCodes.ADD_NEW_CAMERA.getNumber()) {
 			if (resultCode == RESULT_OK) {
+				System.out.println("added new cam");
 				CameraSettings cam = new CameraSettings(Type.HTTP,
 						data.getStringExtra("Name"),
 						data.getStringExtra("Address"), data.getIntExtra(
@@ -92,25 +115,26 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public void onBackPressed() {
-		/*
-		 * for (CameraView cameraView : kamery) { cameraView.stop(); }
-		 */
-		super.onBackPressed();
-	}
-
-	@Override
-	protected void onDestroy() {
-		/*
-		 * for (CameraView cameraView : kamery) { cameraView.stop(); }
-		 */
-		super.onDestroy();
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+	@SuppressLint("HandlerLeak")
+	private class UpdateHandler extends Handler{
+
+		@Override
+		public void handleMessage(Message msg) {
+			updateData();
+		}
+		
+	}
+	private class UpdateDataCounter extends TimerTask {
+
+		@Override
+		public void run() {
+			handler.sendMessage(new Message());
+		}
+
 	}
 }

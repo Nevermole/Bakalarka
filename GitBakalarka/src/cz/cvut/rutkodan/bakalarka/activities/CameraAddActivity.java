@@ -1,9 +1,5 @@
 package cz.cvut.rutkodan.bakalarka.activities;
 
-import cz.cvut.rutkodan.bakalarka.CameraStream;
-import cz.cvut.rutkodan.bakalarka.R;
-import cz.cvut.rutkodan.bakalarka.R.id;
-import cz.cvut.rutkodan.bakalarka.R.layout;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,18 +13,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import cz.cvut.rutkodan.bakalarka.CameraStream;
+import cz.cvut.rutkodan.bakalarka.R;
+import cz.cvut.rutkodan.bakalarka.RequestCodes;
 
 public class CameraAddActivity extends Activity {
 	private ImageView image;
 	private int width;
 	private int height;
+	private String oldName = "";
+	private String oldAddress = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_camera_add);		
-		width = (int) Math.round((getResources().getDisplayMetrics().widthPixels/2.0) * getResources().getDisplayMetrics().density);
-		height = (int) Math.round((getResources().getDisplayMetrics().heightPixels/4.0) * getResources().getDisplayMetrics().density);
+		setContentView(R.layout.activity_camera_add);
+
 		final EditText nazev = (EditText) findViewById(R.id.editName);
 		final EditText adressa = (EditText) findViewById(R.id.editAddress);
 		image = (ImageView) findViewById(R.id.cemera_image);
@@ -43,6 +43,27 @@ public class CameraAddActivity extends Activity {
 
 		});
 		final EditText fps = (EditText) findViewById(R.id.editFPS);
+		Bundle bundle = getIntent().getExtras();
+		if (bundle.get("request").equals(RequestCodes.EDIT_CAMERA)) {
+			nazev.setText(bundle.getString("Name"));
+			oldName = bundle.getString("Name");
+			adressa.setText(bundle.getString("Address"));
+			oldAddress = bundle.getString("Address");
+			fps.setText(Double.toString(bundle.getDouble("FPS", 5.0)));
+			width = bundle.getInt("Width", (int) Math.round((getResources()
+					.getDisplayMetrics().widthPixels / 2.0)
+					* getResources().getDisplayMetrics().density));
+			height = bundle.getInt("Height", (int) Math.round((getResources()
+					.getDisplayMetrics().widthPixels / 4.0)
+					* getResources().getDisplayMetrics().density));
+			new GetImage().execute(adressa.getText().toString());
+		} else {
+			width = (int) Math
+					.round((getResources().getDisplayMetrics().widthPixels / 2.0));
+			height = (int) Math
+					.round((getResources().getDisplayMetrics().heightPixels / 4.0));
+		}
+
 		Button save = (Button) findViewById(R.id.button_add_save);
 		save.setOnClickListener(new OnClickListener() {
 
@@ -55,6 +76,8 @@ public class CameraAddActivity extends Activity {
 						Double.parseDouble(fps.getText().toString()));
 				result.putExtra("Width", width);
 				result.putExtra("Height", height);
+				result.putExtra("OldName", oldName);
+				result.putExtra("OldAddress", oldAddress);
 				setResult(RESULT_OK, result);
 				finish();
 			}

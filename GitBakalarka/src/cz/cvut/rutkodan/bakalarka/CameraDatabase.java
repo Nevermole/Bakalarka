@@ -25,21 +25,25 @@ public class CameraDatabase {
 
 	public CameraDatabase(Context context) {
 		databaseHelper = new CameraDatabaseHelper(context);
-		database = databaseHelper.getWritableDatabase();
+		
 	}
 
 	public long addCameraToDB(String name, String address, int height,
 			int width, double fps) {
+		database = databaseHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(NAME, name);
 		values.put(ADDRESS, address);
 		values.put(HEIGHT, height);
 		values.put(WIDTH, width);
 		values.put(FPS, fps);
-		return database.insert(TABLE, null, values);
+		long res = database.insert(TABLE, null, values);
+		database.close();
+		return res;
 	}
 
 	public ArrayList<CameraSettings> getAllCamerasFromDB() {
+		database = databaseHelper.getWritableDatabase();
 		String[] cols = new String[] { NAME, ADDRESS, HEIGHT, WIDTH, FPS };
 		Cursor mCursor = database.query(TABLE, cols, null, null, null, null,
 				null, null);
@@ -58,12 +62,30 @@ public class CameraDatabase {
 				mCursor.moveToNext();
 			}
 		}
+		database.close();
 		return kamery; // iterate to get each value.
 	}
 
 	public void removeCameraFromDB(String name, String address) {
-		database.delete(TABLE, NAME + "=?," + ADDRESS + "=?", new String[] {
+		database = databaseHelper.getWritableDatabase();
+		database.delete(TABLE, NAME + "=? and " + ADDRESS + "=?", new String[] {
 				name, address });
+		database.close();
 	}
 
+	public void updateCamera(String oldName, String oldAddress,
+			CameraSettings cam) {
+		database = databaseHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(NAME, cam.getName());
+		values.put(ADDRESS, cam.getAddress());
+		values.put(HEIGHT, cam.getHeight());
+		values.put(WIDTH, cam.getWidth());
+		values.put(FPS, cam.getMaxFPS());
+		database.update(TABLE, values, NAME + "=? and " + ADDRESS + "=?",
+				new String[] { oldName, oldAddress });
+		database.close();
+		System.out.println("renamed");
+
+	}
 }
