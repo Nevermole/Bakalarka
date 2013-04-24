@@ -34,6 +34,7 @@ public class MultilieLinearLayout extends LinearLayout {
 	public void recreate() {
 		for (LinearLayout ll : lines) {
 			ll.removeAllViews();
+			removeView(ll);
 		}
 		lines.clear();
 		int j = views.size();
@@ -41,7 +42,17 @@ public class MultilieLinearLayout extends LinearLayout {
 			addView(views.remove(0));
 		}
 	}
-		
+
+	@Override
+	public void removeAllViews() {
+		for (LinearLayout ll : lines) {
+			ll.removeAllViews();
+			removeView(ll);
+		}
+		lines.clear();
+		super.removeAllViews();
+	}
+
 	@Override
 	public void addView(View child) {
 		if (lines.isEmpty()) {
@@ -51,10 +62,10 @@ public class MultilieLinearLayout extends LinearLayout {
 			lines.add(linearLayout);
 		}
 		linearLayout.measure(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);		
+				LayoutParams.WRAP_CONTENT);
 		DisplayMetrics displayMetrics = context.getResources()
 				.getDisplayMetrics();
-		System.out.println( displayMetrics.widthPixels);
+		System.out.println(displayMetrics.widthPixels);
 		System.out.println(linearLayout.getWidth());
 		System.out.println(child.getWidth());
 		if (linearLayout.getMeasuredWidth() + child.getMeasuredWidth() > displayMetrics.widthPixels) {
@@ -64,8 +75,8 @@ public class MultilieLinearLayout extends LinearLayout {
 			lines.add(linearLayout);
 		}
 		linearLayout.addView(child);
-		views.add(child);	
-		//Log.d("Bakalarka", "view added" + getMeasuredWidth());
+		views.add(child);
+		// Log.d("Bakalarka", "view added" + getMeasuredWidth());
 		// super.addView(child);
 	}
 

@@ -50,7 +50,7 @@ public class CameraView extends ImageView {
 		setImageBitmap(bm);
 		TimerTask task = new Update();
 		timer = new Timer();
-		timer.schedule(task, 100);
+		timer.schedule(task, Math.round((Math.random()*1000)));
 	}
 
 	public CameraView(Context context) {

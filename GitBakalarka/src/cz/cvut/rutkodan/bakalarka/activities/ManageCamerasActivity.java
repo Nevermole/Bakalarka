@@ -209,6 +209,9 @@ public class ManageCamerasActivity extends Activity implements OnTouchListener {
 			@Override
 			public void onClick(View v) {
 				if (textView.getText().equals(cameraSettings.getName())) {
+					while (!toDelete.isEmpty()) {
+						delAndAnim(toDelete.remove(0));
+					}
 					layout.setBackgroundColor(getResources().getColor(
 							android.R.color.transparent));
 					textView.setText(getResources().getString(R.string.deleted));
@@ -235,6 +238,7 @@ public class ManageCamerasActivity extends Activity implements OnTouchListener {
 				}
 			}
 		});
+		buttonEdit.setOnTouchListener(this);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			buttonDelete.setBackground(getResources().getDrawable(
 					R.color.button_background_light));
@@ -302,8 +306,7 @@ public class ManageCamerasActivity extends Activity implements OnTouchListener {
 	public void onBackPressed() {
 		while (!toDelete.isEmpty()) {
 			delAndAnim(toDelete.remove(0));
-		}
-		edited = true;	
+		}		
 		Intent result = new Intent();
 		result.putExtra("Edited", edited);
 		setResult(RESULT_OK, result);

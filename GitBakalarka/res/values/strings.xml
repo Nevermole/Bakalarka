@@ -34,5 +34,7 @@ Vide omnesque copiosae per eu. Facilis deleniti ad sea. Qualisque expetendis mei
     <string name="camera_exists">Název nelze použít</string>
     <string name="cams_imported">Kamery byly importovány</string>
     <string name="cams_exported">Uloženo do</string>
+    <string name="recreate">Znovu načíst kamery</string>
+    <string name="title_activity_test">Test</string>
 
 </resources>

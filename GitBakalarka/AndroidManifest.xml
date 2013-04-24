@@ -9,8 +9,8 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,16 +29,22 @@
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.CameraAddActivity"
             android:label="@string/add_camera_string"
-            android:parentActivityName="cz.cvut.rutkodan.bakalarka.activities.MainActivity" ><meta-data
+            android:parentActivityName="cz.cvut.rutkodan.bakalarka.activities.MainActivity" >
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.cvut.rutkodan.bakalarka.MainActivity" />
-            
         </activity>
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.ManageCamerasActivity"
-            android:label="@string/title_activity_manage_cameras" android:parentActivityName="cz.cvut.rutkodan.bakalarka.activities.MainActivity"><meta-data
+            android:label="@string/title_activity_manage_cameras"
+            android:parentActivityName="cz.cvut.rutkodan.bakalarka.activities.MainActivity" >
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.cvut.rutkodan.bakalarka.MainActivity" />
+        </activity>
+        <activity
+            android:name="cz.cvut.rutkodan.bakalarka.activities.Test"
+            android:label="@string/title_activity_test" >
         </activity>
     </application>
 

@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import cz.cvut.rutkodan.bakalarka.CameraList;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
@@ -23,19 +27,26 @@ import cz.cvut.rutkodan.bakalarka.ui.CameraView;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class MainActivity extends Activity {
-	private static CameraList kamery;
+	private CameraList kamery;
 	private MultilieLinearLayout ml;
 	private UpdateHandler handler = new UpdateHandler();
 	public static long dataUsed = 0;
+	private Timer updater;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_main);
+		/*
+		VideoView videoView = (VideoView) findViewById(R.id.videoView1);
+		MediaController mc = new MediaController(this);
+        videoView.setMediaController(mc);
+		videoView.setVideoURI(Uri.parse("rtsp://81.25.30.20:554/live4.sdp"));
+		ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+		imageView.setImageURI(Uri.parse("rtsp://81.25.30.20:554/live3.sdp"));
+		*/
 		final Intent intentAddCamera = new Intent(this, CameraAddActivity.class);
 		intentAddCamera.putExtra("request", RequestCodes.ADD_NEW_CAMERA);
-
-		setContentView(R.layout.activity_main);
 		ImageButton imageButton = (ImageButton) findViewById(R.id.button_add_camera);
 		imageButton.setOnClickListener(new OnClickListener() {
 
@@ -56,8 +67,26 @@ public class MainActivity extends Activity {
 						RequestCodes.MANAGE_CAMERAS.getNumber());
 			}
 		});
+		
+		final Intent intentRunTest = new Intent(this,
+				Test.class);
+		imageButton = (ImageButton) findViewById(R.id.run_test);
+		imageButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(intentRunTest);
+			}
+		});		
+		imageButton = (ImageButton) findViewById(R.id.button_recreate);
+		imageButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				fillLayout();
+			}
+		});
 		kamery = new CameraList(this);
-		ml = (MultilieLinearLayout) findViewById(R.id.multilineLinearLayout);
 		fillLayout();
 		// kameryURL.add("http://160.218.184.211:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
 		// kameryURL.add("http://89.24.105.222:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
@@ -68,12 +97,19 @@ public class MainActivity extends Activity {
 		// kameryURL.add("http://85.207.85.13:5001/video3.mjpg");
 		// kameryURL.add("http://81.25.30.20:5001/video3.mjpg");
 
-		Timer updater = new Timer();
+		updater = new Timer();
 		updater.scheduleAtFixedRate(new UpdateDataCounter(), 1000, 1000);
 	}
 
-	private void fillLayout() {		
-		ml.removeAllViews();
+	private void fillLayout() {
+		ml = new MultilieLinearLayout(this);
+		ml.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
+		ml.setGravity(Gravity.TOP);
+		ml.setOrientation(LinearLayout.VERTICAL);
+		ScrollView scrollView = (ScrollView) findViewById(R.id.main_scrollview);
+		scrollView.removeAllViews();
+		scrollView.addView(ml);
 		kamery.loadFromDB();
 		for (CameraSettings cam : kamery.getAllCameras()) {
 			CameraView cameraView = new CameraView(this, cam, ml);
@@ -84,7 +120,8 @@ public class MainActivity extends Activity {
 	public void updateData() {
 		TextView dataView = (TextView) findViewById(R.id.data_view);
 		String used = Double.toString(dataUsed / 1000000.0);
-		dataView.setText((used.length() > 3 ? used.substring(0, 3) : used)
+		dataView.setText((used.length() > 3 ? used.substring(0,
+				used.indexOf(".") + 2) : used)
 				+ " MB");
 		System.out.println("updated");
 	}
@@ -118,6 +155,12 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+
+	@Override
+	protected void onDestroy() {
+		updater.cancel();
+		super.onDestroy();
 	}
 
 	@SuppressLint("HandlerLeak")

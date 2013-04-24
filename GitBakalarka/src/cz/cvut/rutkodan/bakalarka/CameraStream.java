@@ -23,7 +23,7 @@ public class CameraStream {
 			this.url = new URL(url);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -70,23 +70,22 @@ public class CameraStream {
 			options.outMimeType = (String) props.get("Content-Type");
 			bm = BitmapFactory.decodeByteArray(ab, 0, ab.length, options);
 			if (bm == null) {
-				/*sb.append("\ndone\n");
+				sb.append("\ndone\n");
 				for (int j = 0; j < 10; j++) {
 					b = (byte) (din.read());
 					sb.append(b + " " + (char) b + ",");
 				}
-				System.err.println(sb.toString());*/
+				System.err.println(sb.toString());
 			} else {
 				/*
 				 * sb.append("\ndone\n"); for (int j = 0; j < 10; j++) { b =
 				 * (byte) (din.read()); sb.append(b+" "+(char)b+","); }
 				 * System.out.println(sb.toString());
 				 */
-			}
-
+			}			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} finally {
 			try {
 				if (din != null) {

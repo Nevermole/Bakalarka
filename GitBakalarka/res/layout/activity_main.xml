@@ -7,38 +7,12 @@
     tools:context=".MainActivity" >
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/main_scrollview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/menu_bar" >
-
-        <cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout
-            android:id="@+id/multilineLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:orientation="vertical" >
-        </cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout>
-    </ScrollView>
-
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:text="@string/textview"
-                android:visibility="gone" />
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/menu_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" >
     </ScrollView>
 
     <RelativeLayout
@@ -62,6 +36,8 @@
             android:layout_gravity="right"
             android:background="@color/button_background_dark"
             android:contentDescription="@string/add_camera"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/content_new_dark" />
 
         <ImageButton
@@ -71,13 +47,27 @@
             android:layout_height="48dp"
             android:layout_alignBaseline="@+id/button_add_camera"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="false"
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/button_add_camera"
             android:background="@color/button_background_dark"
             android:contentDescription="@string/add_camera"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/collections_view_as_list" />
+
+        <ImageButton
+            android:id="@+id/button_recreate"
+            style="@android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/data_view"
+            android:background="@color/button_background_dark"
+            android:contentDescription="@string/recreate"
+            android:src="@android:drawable/ic_popup_sync" />
 
         <TextView
             android:id="@+id/data_view"
@@ -89,6 +79,19 @@
             android:text="@string/zero_mb"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
+
+        <ImageButton
+            android:id="@+id/run_test"
+            style="@android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/button_manage_cameras"
+            android:background="@color/button_background_dark"
+            android:contentDescription="@string/add_camera"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/content_new_dark" />
 
     </RelativeLayout>
 
