@@ -35,6 +35,8 @@ public class CameraSettings implements Serializable {
 	public boolean equals(Object o) {
 		if (CameraSettings.class.isInstance(o)) {
 			return ((CameraSettings) o).getName().equals(this.name);
+		} else if (String.class.isInstance(o)) {
+			return ((String) o).equals(this.name);
 		}
 		return false;
 	}

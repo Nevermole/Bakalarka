@@ -61,4 +61,16 @@ public class CameraList {
 		cameras.contains(new CameraSettings(name));
 		return false;
 	}
+
+	public int size() {
+		return cameras.size();
+	}
+
+	public CameraSettings getCamera(int index) {
+		return cameras.get(index);
+	}
+
+	public int getCameraIndex(String name) {		
+		return cameras.indexOf(name);
+	}
 }

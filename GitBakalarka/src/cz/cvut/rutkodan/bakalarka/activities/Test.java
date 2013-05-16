@@ -1,15 +1,18 @@
 package cz.cvut.rutkodan.bakalarka.activities;
 
+import java.io.IOException;
+
 import android.app.Activity;
+import android.media.MediaCodec;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.MediaController;
-import android.widget.VideoView;
 import cz.cvut.rutkodan.bakalarka.R;
 
 public class Test extends Activity {
@@ -19,19 +22,28 @@ public class Test extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test);
 		final EditText editText = (EditText) findViewById(R.id.editText1);
-		final VideoView videoView = (VideoView) findViewById(R.id.videoView1);
-		MediaController mc = new MediaController(videoView.getContext());
-		videoView.setMediaController(mc);
-		videoView.setVideoURI(Uri.parse(editText.getText().toString()));
-		videoView.requestFocus();
+		final SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surfaceView1);
+		final MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(editText.getText().toString()));
+		
 		Button button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new OnClickListener() {
-
+		
 			@Override
-			public void onClick(View v) {
-				videoView.stopPlayback();
-				videoView.setVideoURI(Uri.parse(editText.getText().toString()));
-				videoView.start();
+			public void onClick(View v) {				
+				if (mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}				
+				mediaPlayer.setDisplay(surfaceView.getHolder());								
+				try {
+					mediaPlayer.prepare();					
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				mediaPlayer.start();				
 			}
 		});
 	}

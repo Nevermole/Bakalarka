@@ -5,18 +5,16 @@ import java.util.TimerTask;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.CameraStream;
 
-public class CameraView extends ImageView {
+public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private CameraStream stream;
 	private Timer timer;
@@ -24,33 +22,17 @@ public class CameraView extends ImageView {
 	private int width = 0;
 	private int height = 0;
 	private double fps = 0.5;
-	private MultilieLinearLayout ml;
 	// private long time = 0;
-	private boolean canceled = false;
+	private boolean canceled = true;
 	private boolean hasFinished = true;
 
-	public CameraView(Context context, CameraSettings cameraSettings,
-			MultilieLinearLayout ml) {
+	public CameraView(Context context, CameraSettings cameraSettings) {
 		super(context);
 		this.name = cameraSettings.getName();
 		this.stream = new CameraStream(cameraSettings.getAddress());
 		this.width = cameraSettings.getWidth();
 		this.height = cameraSettings.getHeight();
-		setLayoutParams(new LayoutParams(width, height));
-		// this.fps = fps;
-		this.ml = ml;
-		Bitmap bm = Bitmap.createBitmap(width, height, Config.ARGB_8888);		
-		Canvas c = new Canvas(bm);
-		c.drawColor(Color.BLACK);
-		Paint p = new Paint();
-		p.setStyle(Paint.Style.FILL);
-		p.setColor(Color.WHITE);
-		p.setTextSize(25);
-		c.drawText(cameraSettings.getName(), 50, 50, p);
-		setImageBitmap(bm);
-		TimerTask task = new Update();
-		timer = new Timer();
-		timer.schedule(task, Math.round((Math.random()*1000)));
+		getHolder().addCallback(this);
 	}
 
 	public CameraView(Context context) {
@@ -58,41 +40,16 @@ public class CameraView extends ImageView {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		// TODO Auto-generated method stub
+		System.err.println("onDraw" + name);
+		super.onDraw(canvas);
+	}
+
 	public void loadNewImage() {
 		new RunStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-	}
-
-	@Override
-	protected void onAttachedToWindow() {
-		TimerTask task = new Update();
-		if (!canceled) {
-			timer.cancel();
-		}
-		timer = new Timer();
-		canceled = false;
-		timer.schedule(task, Math.round(1000 / fps));
-		super.onAttachedToWindow();
-	}
-
-	@Override
-	protected void onVisibilityChanged(View changedView, int visibility) {
-		if (visibility == VISIBLE) {
-			System.out.println(name + " visible");
-			TimerTask task = new Update();
-			if (!canceled) {
-				timer.cancel();
-			}
-			timer = new Timer();
-			canceled = false;
-			timer.schedule(task, Math.round(1000 / fps));
-		} else if (visibility == INVISIBLE) {
-			System.out.println(name + " invisible");
-			if (!canceled) {
-				timer.cancel();
-			}
-			canceled = true;
-		}
-		super.onVisibilityChanged(changedView, visibility);
 	}
 
 	@Override
@@ -108,12 +65,24 @@ public class CameraView extends ImageView {
 	private class RunStream extends AsyncTask<Void, Void, Bitmap> {
 
 		@Override
+		protected void onCancelled() {
+			hasFinished = true;
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			hasFinished = false;
+			super.onPreExecute();
+		}
+
+		@Override
 		protected Bitmap doInBackground(Void... params) {
 			Bitmap bm = null;
 			try {
 				bm = stream.getData();
 			} catch (Exception e) {
-				System.err.println("Failed to load image on " + name);
+				// System.err.println("Failed to load image on " + name);
 			}
 			return bm;
 		}
@@ -126,12 +95,15 @@ public class CameraView extends ImageView {
 				 * long now = new Date().getTime(); System.out.println(Double
 				 * .toString(1000 / (double) (now - time))); time = now;
 				 */
-				setImageBitmap(result);
+				Canvas c = getHolder().lockCanvas();
+				if (c != null) {
+					c.drawBitmap(result, 0, 0, null);
+					getHolder().unlockCanvasAndPost(c);
+				}
 				if ((result.getWidth() != width || result.getHeight() != height)) {
 					width = result.getWidth();
 					height = result.getHeight();
-					setLayoutParams(new LayoutParams(width, height));
-					ml.recreate();
+					// setLayoutParams(new LayoutParams(width, height));
 				}
 			} else {
 				System.err.println("Failed to load image on " + name);
@@ -153,7 +125,6 @@ public class CameraView extends ImageView {
 			} else {
 				timer.schedule(task, 100);
 			}
-
 		}
 
 	}
@@ -165,11 +136,62 @@ public class CameraView extends ImageView {
 		canceled = true;
 	}
 
+	public void pause() {
+		if (!canceled) {
+			timer.cancel();
+		}
+		canceled = true;
+	}
+
+	public void play() {
+		if (!canceled) {
+			timer.cancel();
+		}
+		timer = new Timer();
+		hasFinished = true;
+		canceled = false;
+		TimerTask task = new Update();
+		timer.schedule(task, Math.round(1000 / fps));
+	}
+
 	public double getFps() {
 		return fps;
 	}
 
 	public void setFps(double fps) {
 		this.fps = fps;
+	}
+
+	
+	
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		System.err.println("surface created");
+		// Bitmap bm = Bitmap.createBitmap(width, height, Config.ARGB_8888);		
+		Canvas c = holder.lockCanvas();
+		// c.drawBitmap(bm, 0, 0, null);
+		c.drawColor(Color.BLACK);
+		Paint p = new Paint();
+		p.setStyle(Paint.Style.FILL);
+		p.setColor(Color.WHITE);
+		p.setTextSize(25);
+		c.drawText(name, 50, 50, p);
+		holder.unlockCanvasAndPost(c);
+
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		System.err.println("surface destroyed");
+		pause();
+	}
+
+	public String getName() {
+		return name;
 	}
 }

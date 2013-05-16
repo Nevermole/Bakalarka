@@ -46,6 +46,15 @@
             android:name="cz.cvut.rutkodan.bakalarka.activities.Test"
             android:label="@string/title_activity_test" >
         </activity>
+        <activity
+            android:name="cz.cvut.rutkodan.bakalarka.activities.CameraViewsActivity"
+            android:label="@string/title_activity_camera_views" android:theme="@android:style/Theme.Light.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
