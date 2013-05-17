@@ -3,49 +3,62 @@ package cz.cvut.rutkodan.bakalarka.ui;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.VideoView;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.CameraStream;
+import cz.cvut.rutkodan.bakalarka.activities.CameraViewsActivity;
+import cz.cvut.rutkodan.bakalarka.connection.Type;
 
-public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraView extends VideoView implements SurfaceHolder.Callback,
+		OnPreparedListener {
 
+	private Type type;
 	private CameraStream stream;
 	private Timer timer;
 	private String name;
+	private String address;
 	private int width = 0;
 	private int height = 0;
 	private double fps = 0.5;
+	private MediaPlayer mediaPlayer;
 	// private long time = 0;
 	private boolean canceled = true;
 	private boolean hasFinished = true;
 
+	@SuppressLint("DefaultLocale")
 	public CameraView(Context context, CameraSettings cameraSettings) {
 		super(context);
+		this.address = cameraSettings.getAddress();
 		this.name = cameraSettings.getName();
 		this.stream = new CameraStream(cameraSettings.getAddress());
 		this.width = cameraSettings.getWidth();
 		this.height = cameraSettings.getHeight();
+		if (address.toLowerCase().startsWith("http")) {
+			this.type = Type.HTTP;
+		} else {
+			this.type = Type.RTSP;
+			setVideoURI(Uri.parse(address));
+		}
 		getHolder().addCallback(this);
+		System.err.println(type);
 	}
 
 	public CameraView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
-	}
-
-	
-	@Override
-	protected void onDraw(Canvas canvas) {
-		// TODO Auto-generated method stub
-		System.err.println("onDraw" + name);
-		super.onDraw(canvas);
 	}
 
 	public void loadNewImage() {
@@ -55,10 +68,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	protected void onDetachedFromWindow() {
 		System.out.println("detached");
-		if (!canceled) {
-			timer.cancel();
-		}
-		canceled = true;
+		pause();
 		super.onDetachedFromWindow();
 	}
 
@@ -129,29 +139,30 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
-	public void stop() {
-		if (!canceled) {
-			timer.cancel();
-		}
-		canceled = true;
-	}
-
 	public void pause() {
-		if (!canceled) {
-			timer.cancel();
+		if (type.equals(Type.RTSP)) {
+			stopPlayback();
+		} else {
+			if (!canceled) {
+				timer.cancel();
+			}
+			canceled = true;
 		}
-		canceled = true;
 	}
 
-	public void play() {
-		if (!canceled) {
-			timer.cancel();
+	public void play(SurfaceHolder holder) {
+		if (type.equals(Type.RTSP)) {
+			start();
+		} else {
+			if (!canceled) {
+				timer.cancel();
+			}
+			timer = new Timer();
+			hasFinished = true;
+			canceled = false;
+			TimerTask task = new Update();
+			timer.schedule(task, Math.round(1000 / fps));
 		}
-		timer = new Timer();
-		hasFinished = true;
-		canceled = false;
-		TimerTask task = new Update();
-		timer.schedule(task, Math.round(1000 / fps));
 	}
 
 	public double getFps() {
@@ -162,8 +173,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 		this.fps = fps;
 	}
 
-	
-	
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
@@ -172,17 +181,19 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		System.err.println("surface created");
-		// Bitmap bm = Bitmap.createBitmap(width, height, Config.ARGB_8888);		
-		Canvas c = holder.lockCanvas();
-		// c.drawBitmap(bm, 0, 0, null);
-		c.drawColor(Color.BLACK);
-		Paint p = new Paint();
-		p.setStyle(Paint.Style.FILL);
-		p.setColor(Color.WHITE);
-		p.setTextSize(25);
-		c.drawText(name, 50, 50, p);
-		holder.unlockCanvasAndPost(c);
-
+		if (type.equals(Type.HTTP)) {
+			// Bitmap bm = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+			Canvas c = holder.lockCanvas();
+			// c.drawBitmap(bm, 0, 0, null);
+			c.drawColor(Color.BLACK);
+			Paint p = new Paint();
+			p.setStyle(Paint.Style.FILL);
+			p.setColor(Color.WHITE);
+			p.setTextSize(25);
+			c.drawText(name, 50, 50, p);
+			holder.unlockCanvasAndPost(c);
+		}
+		play(holder);
 	}
 
 	@Override
@@ -193,5 +204,12 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public void onPrepared(MediaPlayer mp) {
+		System.err.println("starting RTSP play");
+		System.err.println(mp.getVideoHeight());
+		mp.start();
 	}
 }

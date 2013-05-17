@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,17 +26,14 @@ import cz.cvut.rutkodan.bakalarka.CameraList;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.RequestCodes;
-import cz.cvut.rutkodan.bakalarka.connection.Type;
 import cz.cvut.rutkodan.bakalarka.ui.CameraGridFragment;
 import cz.cvut.rutkodan.bakalarka.ui.CameraView;
-import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class CameraViewsActivity extends FragmentActivity {
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
 	private static CameraList kamery;
-	private MultilieLinearLayout ml;
 	private UpdateHandler handler = new UpdateHandler();
 	public static long dataUsed = 0;
 	private Timer updater;
@@ -43,13 +41,13 @@ public class CameraViewsActivity extends FragmentActivity {
 	private String name;
 	private int horizontalCount = 2;
 	private int verticalCount = 2;
+	public static Context appContext;
 
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera_views);
+		appContext = getApplicationContext();
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 
@@ -124,15 +122,13 @@ public class CameraViewsActivity extends FragmentActivity {
 		final List<Fragment> fragments = new Vector<Fragment>();
 		for (int j = 0; j < (int) Math.ceil(kamery.size()
 				/ (double) (horizontalCount * verticalCount)); j++) {
-			ArrayList<CameraView> cams = new ArrayList<CameraView>();
+			ArrayList<CameraSettings> cams = new ArrayList<CameraSettings>();
 			for (int i = j * horizontalCount * verticalCount; i < j
 					* horizontalCount * verticalCount + horizontalCount
 					* verticalCount
-					&& i < kamery.size(); i++) {
-				CameraView cameraView = new CameraView(getApplicationContext(),
-						kamery.getCamera(i));
-				cams.add(cameraView);
-				if (name != null && name == cameraView.getName()) {
+					&& i < kamery.size(); i++) {				
+				cams.add(kamery.getCamera(i));
+				if (name != null && name.equals(kamery.getCamera(i).getName())) {
 					visiblePage = i;
 				}
 			}
@@ -142,11 +138,12 @@ public class CameraViewsActivity extends FragmentActivity {
 			cameraGridFragment.setCameras(cams);
 			fragments.add(cameraGridFragment);
 		}
-		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
+		mSectionsPagerAdapter = new SectionsPagerAdapter(
+				getSupportFragmentManager(), fragments);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		mViewPager
+		/*mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
 					@Override
@@ -156,10 +153,10 @@ public class CameraViewsActivity extends FragmentActivity {
 						((CameraGridFragment) fragments.get(arg0)).play();
 						visiblePage = arg0;
 					}
-				});
+				});*/
 		mViewPager.setCurrentItem(visiblePage, true);
 		if (fragments.size() > 0) {
-			((CameraGridFragment) fragments.get(visiblePage)).play();
+			//((CameraGridFragment) fragments.get(visiblePage)).play();
 		}
 	}
 
@@ -220,14 +217,13 @@ public class CameraViewsActivity extends FragmentActivity {
 		if (requestCode == RequestCodes.ADD_NEW_CAMERA.getNumber()) {
 			if (resultCode == RESULT_OK) {
 				System.out.println("added new cam");
-				CameraSettings cam = new CameraSettings(Type.HTTP,
+				CameraSettings cam = new CameraSettings(
 						data.getStringExtra("Name"),
 						data.getStringExtra("Address"), data.getIntExtra(
 								"Height", 0), data.getIntExtra("Width", 0),
 						data.getDoubleExtra("FPS", 5.0));
+
 				kamery.add(cam);
-				CameraView cameraView = new CameraView(this, cam);
-				ml.addView(cameraView);
 			}
 		} else if (requestCode == RequestCodes.MANAGE_CAMERAS.getNumber()) {
 			if (resultCode == RESULT_OK) {

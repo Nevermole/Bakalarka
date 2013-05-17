@@ -14,7 +14,7 @@
         android:layout_toLeftOf="@+id/button1"
         android:ems="10"
         android:inputType="textWebEditText"
-        android:text="http://85.207.84.10:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&amp;camera=1" >
+        android:text="rtsp://81.25.30.20:554/live4.sdp" >
 
         <requestFocus />
     </EditText>
@@ -29,7 +29,7 @@
         android:layout_alignTop="@+id/editText1"
         android:text="Button" />
 
-    <SurfaceView
+    <VideoView
         android:id="@+id/surfaceView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

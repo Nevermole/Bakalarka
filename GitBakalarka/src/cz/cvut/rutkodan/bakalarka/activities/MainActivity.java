@@ -23,7 +23,6 @@ import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.RequestCodes;
 import cz.cvut.rutkodan.bakalarka.connection.Type;
-import cz.cvut.rutkodan.bakalarka.ui.CameraView;
 import cz.cvut.rutkodan.bakalarka.ui.MultilieLinearLayout;
 
 public class MainActivity extends Activity {
@@ -38,13 +37,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		/*
-		VideoView videoView = (VideoView) findViewById(R.id.videoView1);
-		MediaController mc = new MediaController(this);
-        videoView.setMediaController(mc);
-		videoView.setVideoURI(Uri.parse("rtsp://81.25.30.20:554/live4.sdp"));
-		ImageView imageView = (ImageView) findViewById(R.id.imageView1);
-		imageView.setImageURI(Uri.parse("rtsp://81.25.30.20:554/live3.sdp"));
-		*/
+		 * VideoView videoView = (VideoView) findViewById(R.id.videoView1);
+		 * MediaController mc = new MediaController(this);
+		 * videoView.setMediaController(mc);
+		 * videoView.setVideoURI(Uri.parse("rtsp://81.25.30.20:554/live4.sdp"));
+		 * ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+		 * imageView.setImageURI(Uri.parse("rtsp://81.25.30.20:554/live3.sdp"));
+		 */
 		final Intent intentAddCamera = new Intent(this, CameraAddActivity.class);
 		intentAddCamera.putExtra("request", RequestCodes.ADD_NEW_CAMERA);
 		ImageButton imageButton = (ImageButton) findViewById(R.id.button_add_camera);
@@ -67,9 +66,8 @@ public class MainActivity extends Activity {
 						RequestCodes.MANAGE_CAMERAS.getNumber());
 			}
 		});
-		
-		final Intent intentRunTest = new Intent(this,
-				Test.class);
+
+		final Intent intentRunTest = new Intent(this, Test.class);
 		imageButton = (ImageButton) findViewById(R.id.run_test);
 		imageButton.setOnClickListener(new OnClickListener() {
 
@@ -77,7 +75,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				startActivity(intentRunTest);
 			}
-		});		
+		});
 		imageButton = (ImageButton) findViewById(R.id.button_recreate);
 		imageButton.setOnClickListener(new OnClickListener() {
 
@@ -112,8 +110,8 @@ public class MainActivity extends Activity {
 		scrollView.addView(ml);
 		kamery.loadFromDB();
 		for (CameraSettings cam : kamery.getAllCameras()) {
-			//CameraView cameraView = new CameraView(this, cam, ml);
-			//ml.addView(cameraView);
+			// CameraView cameraView = new CameraView(this, cam, ml);
+			// ml.addView(cameraView);
 		}
 	}
 
@@ -131,14 +129,14 @@ public class MainActivity extends Activity {
 		if (requestCode == RequestCodes.ADD_NEW_CAMERA.getNumber()) {
 			if (resultCode == RESULT_OK) {
 				System.out.println("added new cam");
-				CameraSettings cam = new CameraSettings(Type.HTTP,
+				CameraSettings cam = new CameraSettings(
 						data.getStringExtra("Name"),
 						data.getStringExtra("Address"), data.getIntExtra(
 								"Height", 0), data.getIntExtra("Width", 0),
 						data.getDoubleExtra("FPS", 5.0));
 				kamery.add(cam);
-				//CameraView cameraView = new CameraView(this, cam, ml);
-				//ml.addView(cameraView);
+				// CameraView cameraView = new CameraView(this, cam, ml);
+				// ml.addView(cameraView);
 			}
 		} else if (requestCode == RequestCodes.MANAGE_CAMERAS.getNumber()) {
 			if (resultCode == RESULT_OK) {

@@ -51,7 +51,8 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:hint="Sample"
-                    android:inputType="text" >
+                    android:inputType="text"
+                    android:text="LiberecRTSP" >
 
                     <requestFocus />
                 </EditText>
@@ -90,7 +91,7 @@
                     android:layout_weight="1"
                     android:hint="http://111.222.111.222:5001/video3.mjpg"
                     android:inputType="textUri"
-                    android:text="http://160.218.184.211:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&amp;camera=1" />
+                    android:text="rtsp://81.25.30.20:554/live4.sdp" />
             </LinearLayout>
 
             <LinearLayout

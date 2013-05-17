@@ -2,24 +2,20 @@ package cz.cvut.rutkodan.bakalarka;
 
 import java.io.Serializable;
 
-import cz.cvut.rutkodan.bakalarka.connection.Type;
-
 public class CameraSettings implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8641113749333874914L;
-	private Type type;
 	private String name;
 	private String address;
 	private int height;
 	private int width;
 	private double maxFPS = 5.0;
 
-	public CameraSettings(Type type, String name, String address, int height,
+	public CameraSettings(String name, String address, int height,
 			int width, double maxFPS) {
 		super();
-		this.setType(type);
 		this.name = name;
 		this.address = address;
 		this.height = height;
@@ -80,13 +76,4 @@ public class CameraSettings implements Serializable {
 	public void setMaxFPS(double maxFPS) {
 		this.maxFPS = maxFPS;
 	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
 }

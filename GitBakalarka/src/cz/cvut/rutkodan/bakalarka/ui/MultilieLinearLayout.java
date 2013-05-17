@@ -13,7 +13,8 @@ public class MultilieLinearLayout extends LinearLayout {
 	private ArrayList<View> views = new ArrayList<View>();
 	private LinearLayout linearLayout;
 	private int cols;
-	private int rows;
+
+	// private int rows;
 
 	public MultilieLinearLayout(Context context) {
 		super(context);
@@ -28,12 +29,6 @@ public class MultilieLinearLayout extends LinearLayout {
 	public MultilieLinearLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
-	}
-
-	public MultilieLinearLayout(Context context, int rows, int cols) {
-		super(context);
-		this.rows = rows;
-		this.cols = cols;
 	}
 
 	public void recreate() {
@@ -87,9 +82,4 @@ public class MultilieLinearLayout extends LinearLayout {
 	public void setColumnCount(int columns) {
 		this.cols = columns;
 	}
-
-	public void setRowCount(int rows) {
-		this.rows = rows;
-	}
-
 }

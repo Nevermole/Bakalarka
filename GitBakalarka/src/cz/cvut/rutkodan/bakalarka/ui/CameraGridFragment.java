@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.activities.CameraViewsActivity;
 
@@ -19,17 +19,17 @@ public class CameraGridFragment extends Fragment {
 
 	public static final String ARG_SECTION_NUMBER = "section_number";
 	public static final String ARG_OBJECT = "object";
-	private ArrayList<CameraView> cameraList;
+	private ArrayList<CameraSettings> cameraList;
 	private int columns = 2;
 	private int rows = 1;
 	private View rootView;
 
 	public CameraGridFragment() {
 		super();
-		cameraList = new ArrayList<CameraView>();
+		cameraList = new ArrayList<CameraSettings>();
 	}
 
-	public void setCameras(ArrayList<CameraView> cams) {
+	public void setCameras(ArrayList<CameraSettings> cams) {
 		this.cameraList = cams;
 	}
 
@@ -43,31 +43,36 @@ public class CameraGridFragment extends Fragment {
 
 	@Override
 	public void onDestroyView() {
-		System.err.println("destoy view");		
-        if (rootView!= null) {
-            MultilieLinearLayout parentViewGroup = (MultilieLinearLayout) rootView.findViewById(R.id.cameraGrid);            
-            if (parentViewGroup != null) {
-                parentViewGroup.removeAllViews();
-            }
-        }
+		System.err.println("destoy view");
+		if (rootView != null) {
+			MultilieLinearLayout parentViewGroup = (MultilieLinearLayout) rootView
+					.findViewById(R.id.cameraGrid);
+			if (parentViewGroup != null) {
+				parentViewGroup.removeAllViews();
+			}
+		}
 		super.onDestroyView();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		rootView= inflater.inflate(R.layout.fragment_camera_grid,
-				container, false);		
-		MultilieLinearLayout layout = (MultilieLinearLayout) rootView.findViewById(R.id.cameraGrid);
+		setRetainInstance(true);
+		rootView = inflater.inflate(R.layout.fragment_camera_grid, container,
+				false);
+		MultilieLinearLayout layout = (MultilieLinearLayout) rootView
+				.findViewById(R.id.cameraGrid);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		layout.setLayoutParams(lp);
 		layout.removeAllViews();
 		layout.setColumnCount(columns);
-		layout.setRowCount(rows);
 		System.out.println(layout.getWidth());
-		for (final CameraView cameraView : cameraList) {
+		for (CameraSettings cameraSettings : cameraList) {
+			CameraView cameraView = new CameraView(getActivity(),
+					cameraSettings);
 			if (rows != 1 && columns != 1) {
+				final String name = cameraView.getName();
 				cameraView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -75,9 +80,8 @@ public class CameraGridFragment extends Fragment {
 						final Intent intent = new Intent(
 								getView().getContext(),
 								CameraViewsActivity.class);
-						intent.putExtra("name", cameraView.getName());
+						intent.putExtra("name", name);
 						startActivity(intent);
-
 					}
 				});
 			}
@@ -88,26 +92,13 @@ public class CameraGridFragment extends Fragment {
 
 	@Override
 	public void onStart() {
-		play();
+		// play();
 		super.onStart();
 	}
 
 	@Override
 	public void onPause() {
-		pause();
+		// pause();
 		super.onPause();
-	}
-
-	public void pause() {
-		for (CameraView cameraView : cameraList) {
-			cameraView.pause();
-		}
-	}
-
-	public void play() {
-
-		for (CameraView cameraView : cameraList) {
-			cameraView.play();
-		}
 	}
 }

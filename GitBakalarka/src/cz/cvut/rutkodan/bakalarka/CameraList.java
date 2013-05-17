@@ -35,7 +35,7 @@ public class CameraList {
 
 	public void add(Type type, String name, String address, int height,
 			int width, double maxFPS) {
-		CameraSettings cam = new CameraSettings(type, name, address, height,
+		CameraSettings cam = new CameraSettings(name, address, height,
 				width, maxFPS);
 		cameras.add(cam);
 		saveCameraToDatabase(cam);

@@ -41,7 +41,6 @@ import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.DeleteAndAnimate;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.RequestCodes;
-import cz.cvut.rutkodan.bakalarka.connection.Type;
 
 public class ManageCamerasActivity extends Activity implements OnTouchListener {
 	private CameraDatabase database;
@@ -306,7 +305,7 @@ public class ManageCamerasActivity extends Activity implements OnTouchListener {
 	public void onBackPressed() {
 		while (!toDelete.isEmpty()) {
 			delAndAnim(toDelete.remove(0));
-		}		
+		}
 		Intent result = new Intent();
 		result.putExtra("Edited", edited);
 		setResult(RESULT_OK, result);
@@ -318,7 +317,7 @@ public class ManageCamerasActivity extends Activity implements OnTouchListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == RequestCodes.EDIT_CAMERA.getNumber()) {
 			if (resultCode == RESULT_OK) {
-				CameraSettings cam = new CameraSettings(Type.HTTP,
+				CameraSettings cam = new CameraSettings(
 						data.getStringExtra("Name"),
 						data.getStringExtra("Address"), data.getIntExtra(
 								"Height", 0), data.getIntExtra("Width", 0),

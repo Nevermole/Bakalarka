@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import cz.cvut.rutkodan.bakalarka.connection.Type;
 
 public class CameraDatabase {
 
@@ -55,7 +54,7 @@ public class CameraDatabase {
 				int height = mCursor.getInt(2);
 				int width = mCursor.getInt(3);
 				double maxFPS = mCursor.getDouble(4);
-				CameraSettings cam = new CameraSettings(Type.HTTP, name,
+				CameraSettings cam = new CameraSettings(name,
 						address, height, width, maxFPS);
 				kamery.add(cam);
 				mCursor.moveToNext();

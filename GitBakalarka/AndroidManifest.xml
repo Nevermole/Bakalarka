@@ -19,12 +19,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/app_name" >           
         </activity>
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.CameraAddActivity"
@@ -32,7 +27,7 @@
             android:parentActivityName="cz.cvut.rutkodan.bakalarka.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cz.cvut.rutkodan.bakalarka.MainActivity" />
+                android:value="cz.cvut.rutkodan.bakalarka.CameraViewsActivity" />
         </activity>
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.ManageCamerasActivity"
@@ -40,7 +35,7 @@
             android:parentActivityName="cz.cvut.rutkodan.bakalarka.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cz.cvut.rutkodan.bakalarka.MainActivity" />
+                android:value="cz.cvut.rutkodan.bakalarka.CameraViewsActivity" />
         </activity>
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.Test"
