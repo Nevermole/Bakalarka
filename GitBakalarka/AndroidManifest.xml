@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="10"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,9 +18,15 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="cz.cvut.rutkodan.bakalarka.activities.MainActivity"
-            android:label="@string/app_name" >           
-        </activity>
+            android:name="cz.cvut.rutkodan.bakalarka.activities.CameraViewsActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>        
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.CameraAddActivity"
             android:label="@string/add_camera_string"
@@ -40,16 +46,7 @@
         <activity
             android:name="cz.cvut.rutkodan.bakalarka.activities.Test"
             android:label="@string/title_activity_test" >
-        </activity>
-        <activity
-            android:name="cz.cvut.rutkodan.bakalarka.activities.CameraViewsActivity"
-            android:label="@string/title_activity_camera_views" android:theme="@android:style/Theme.Light.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        </activity>        
     </application>
 
 </manifest>

@@ -77,14 +77,16 @@ public class CameraGridFragment extends Fragment {
 
 					@Override
 					public void onClick(View v) {
-						final Intent intent = new Intent(
-								getView().getContext(),
+						System.err.println("Clicked");
+						final Intent intent = new Intent(getActivity(),
 								CameraViewsActivity.class);
 						intent.putExtra("name", name);
 						startActivity(intent);
 					}
 				});
 			}
+			/*LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+					LayoutParams.MATCH_PARENT, LayoutParams.FILL_PARENT);*/
 			layout.addView(cameraView);
 		}
 		return rootView;

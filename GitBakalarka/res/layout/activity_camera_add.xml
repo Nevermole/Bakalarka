@@ -50,9 +50,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:hint="Sample"
+                    android:hint="@string/sample"
                     android:inputType="text"
-                    android:text="LiberecRTSP" >
+                    >
 
                     <requestFocus />
                 </EditText>
@@ -89,9 +89,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:hint="http://111.222.111.222:5001/video3.mjpg"
+                    android:hint="@string/url_sample"
                     android:inputType="textUri"
-                    android:text="rtsp://81.25.30.20:554/live4.sdp" />
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -108,7 +108,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/camera_max_fps"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -126,7 +128,9 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:inputType="numberDecimal"
-                    android:text="5.0" />
+                    android:text="5.0"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <ImageView

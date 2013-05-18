@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Bakalarka</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">IP Camera Monitor</string>    
     <string name="menu_settings">Settings</string>
     <string name="title_activity_all">All</string>
     <string name="action_settings">Settings</string>
@@ -26,5 +25,7 @@
     <string name="recreate">Znovu načíst kamery</string>
     <string name="title_activity_test">Test</string>
     <string name="title_activity_camera_views">CameraViews</string>
+    <string name="sample">Příklad</string>
+    <string name="url_sample">http:// nebo rtsp:// adresa</string>
 
 </resources>

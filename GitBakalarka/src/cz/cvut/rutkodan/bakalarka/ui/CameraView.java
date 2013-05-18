@@ -9,21 +9,15 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.widget.VideoView;
 import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.CameraStream;
-import cz.cvut.rutkodan.bakalarka.activities.CameraViewsActivity;
 import cz.cvut.rutkodan.bakalarka.connection.Type;
 
-public class CameraView extends VideoView implements SurfaceHolder.Callback,
-		OnPreparedListener {
+public class CameraView extends VideoView implements SurfaceHolder.Callback {
 
 	private Type type;
 	private CameraStream stream;
@@ -33,7 +27,6 @@ public class CameraView extends VideoView implements SurfaceHolder.Callback,
 	private int width = 0;
 	private int height = 0;
 	private double fps = 0.5;
-	private MediaPlayer mediaPlayer;
 	// private long time = 0;
 	private boolean canceled = true;
 	private boolean hasFinished = true;
@@ -204,12 +197,5 @@ public class CameraView extends VideoView implements SurfaceHolder.Callback,
 
 	public String getName() {
 		return name;
-	}
-
-	@Override
-	public void onPrepared(MediaPlayer mp) {
-		System.err.println("starting RTSP play");
-		System.err.println(mp.getVideoHeight());
-		mp.start();
 	}
 }

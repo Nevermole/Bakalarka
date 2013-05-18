@@ -27,7 +27,6 @@ import cz.cvut.rutkodan.bakalarka.CameraSettings;
 import cz.cvut.rutkodan.bakalarka.R;
 import cz.cvut.rutkodan.bakalarka.RequestCodes;
 import cz.cvut.rutkodan.bakalarka.ui.CameraGridFragment;
-import cz.cvut.rutkodan.bakalarka.ui.CameraView;
 
 public class CameraViewsActivity extends FragmentActivity {
 
