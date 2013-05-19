@@ -1,10 +1,13 @@
-package cz.cvut.rutkodan.bakalarka.ui;
+package cz.cvut.rutkodan.ipcameramonitor.ui;
 
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 public class MultilieLinearLayout extends LinearLayout {
@@ -13,11 +16,19 @@ public class MultilieLinearLayout extends LinearLayout {
 	private ArrayList<View> views = new ArrayList<View>();
 	private LinearLayout linearLayout;
 	private int cols;
+	private int heigth;
+	private int width; 
 
 	// private int rows;
 
 	public MultilieLinearLayout(Context context) {
 		super(context);
+		WindowManager wm =  (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();		
+		Point size = new Point();
+		display.getSize(size);
+		width = size.x;
+		//height = size.y;
 	}
 
 	public MultilieLinearLayout(Context context, AttributeSet attrs,

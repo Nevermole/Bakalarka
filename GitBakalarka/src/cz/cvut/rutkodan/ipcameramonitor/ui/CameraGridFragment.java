@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka.ui;
+package cz.cvut.rutkodan.ipcameramonitor.ui;
 
 import java.util.ArrayList;
 
@@ -11,9 +11,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import cz.cvut.rutkodan.bakalarka.CameraSettings;
-import cz.cvut.rutkodan.bakalarka.R;
-import cz.cvut.rutkodan.bakalarka.activities.CameraViewsActivity;
+import cz.cvut.rutkodan.ipcameramonitor.R;
+import cz.cvut.rutkodan.ipcameramonitor.CameraSettings;
+import cz.cvut.rutkodan.ipcameramonitor.activities.CameraViewsActivity;
 
 public class CameraGridFragment extends Fragment {
 

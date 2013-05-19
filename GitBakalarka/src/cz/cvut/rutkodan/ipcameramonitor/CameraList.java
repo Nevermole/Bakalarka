@@ -1,9 +1,9 @@
-package cz.cvut.rutkodan.bakalarka;
+package cz.cvut.rutkodan.ipcameramonitor;
 
 import java.util.ArrayList;
 
 import android.content.Context;
-import cz.cvut.rutkodan.bakalarka.connection.Type;
+import cz.cvut.rutkodan.ipcameramonitor.connection.Type;
 
 public class CameraList {
 

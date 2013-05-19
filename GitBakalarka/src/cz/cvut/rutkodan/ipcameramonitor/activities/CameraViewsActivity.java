@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka.activities;
+package cz.cvut.rutkodan.ipcameramonitor.activities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +22,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import cz.cvut.rutkodan.bakalarka.CameraList;
-import cz.cvut.rutkodan.bakalarka.CameraSettings;
-import cz.cvut.rutkodan.bakalarka.R;
-import cz.cvut.rutkodan.bakalarka.RequestCodes;
-import cz.cvut.rutkodan.bakalarka.ui.CameraGridFragment;
+import cz.cvut.rutkodan.ipcameramonitor.R;
+import cz.cvut.rutkodan.ipcameramonitor.CameraList;
+import cz.cvut.rutkodan.ipcameramonitor.CameraSettings;
+import cz.cvut.rutkodan.ipcameramonitor.RequestCodes;
+import cz.cvut.rutkodan.ipcameramonitor.ui.CameraGridFragment;
 
 public class CameraViewsActivity extends FragmentActivity {
 

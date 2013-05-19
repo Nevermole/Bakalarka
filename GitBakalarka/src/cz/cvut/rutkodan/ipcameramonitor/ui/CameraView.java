@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka.ui;
+package cz.cvut.rutkodan.ipcameramonitor.ui;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,9 +13,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.SurfaceHolder;
 import android.widget.VideoView;
-import cz.cvut.rutkodan.bakalarka.CameraSettings;
-import cz.cvut.rutkodan.bakalarka.CameraStream;
-import cz.cvut.rutkodan.bakalarka.connection.Type;
+import cz.cvut.rutkodan.ipcameramonitor.CameraSettings;
+import cz.cvut.rutkodan.ipcameramonitor.CameraStream;
+import cz.cvut.rutkodan.ipcameramonitor.connection.Type;
 
 public class CameraView extends VideoView implements SurfaceHolder.Callback {
 

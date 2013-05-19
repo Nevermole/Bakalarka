@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka.activities;
+package cz.cvut.rutkodan.ipcameramonitor.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,10 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import cz.cvut.rutkodan.bakalarka.CameraList;
-import cz.cvut.rutkodan.bakalarka.CameraStream;
-import cz.cvut.rutkodan.bakalarka.R;
-import cz.cvut.rutkodan.bakalarka.RequestCodes;
+import cz.cvut.rutkodan.ipcameramonitor.R;
+import cz.cvut.rutkodan.ipcameramonitor.CameraList;
+import cz.cvut.rutkodan.ipcameramonitor.CameraStream;
+import cz.cvut.rutkodan.ipcameramonitor.RequestCodes;
 
 public class CameraAddActivity extends Activity {
 	private ImageView image;

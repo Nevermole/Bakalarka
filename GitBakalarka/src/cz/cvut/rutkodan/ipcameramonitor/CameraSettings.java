@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka;
+package cz.cvut.rutkodan.ipcameramonitor;
 
 import java.io.Serializable;
 

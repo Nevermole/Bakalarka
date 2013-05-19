@@ -1,4 +1,4 @@
-package cz.cvut.rutkodan.bakalarka.activities;
+package cz.cvut.rutkodan.ipcameramonitor.activities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,12 +35,12 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import cz.cvut.rutkodan.bakalarka.CameraDatabase;
-import cz.cvut.rutkodan.bakalarka.CameraList;
-import cz.cvut.rutkodan.bakalarka.CameraSettings;
-import cz.cvut.rutkodan.bakalarka.DeleteAndAnimate;
-import cz.cvut.rutkodan.bakalarka.R;
-import cz.cvut.rutkodan.bakalarka.RequestCodes;
+import cz.cvut.rutkodan.ipcameramonitor.R;
+import cz.cvut.rutkodan.ipcameramonitor.CameraDatabase;
+import cz.cvut.rutkodan.ipcameramonitor.CameraList;
+import cz.cvut.rutkodan.ipcameramonitor.CameraSettings;
+import cz.cvut.rutkodan.ipcameramonitor.DeleteAndAnimate;
+import cz.cvut.rutkodan.ipcameramonitor.RequestCodes;
 
 public class ManageCamerasActivity extends Activity implements OnTouchListener {
 	private CameraDatabase database;
