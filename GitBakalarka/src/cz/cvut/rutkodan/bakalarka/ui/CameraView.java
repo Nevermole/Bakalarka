@@ -55,7 +55,7 @@ public class CameraView extends VideoView implements SurfaceHolder.Callback {
 	}
 
 	public void loadNewImage() {
-		new RunStream().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		new GetMJPEGData().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class CameraView extends VideoView implements SurfaceHolder.Callback {
 		super.onDetachedFromWindow();
 	}
 
-	private class RunStream extends AsyncTask<Void, Void, Bitmap> {
+	private class GetMJPEGData extends AsyncTask<Void, Void, Bitmap> {
 
 		@Override
 		protected void onCancelled() {
@@ -122,7 +122,7 @@ public class CameraView extends VideoView implements SurfaceHolder.Callback {
 			timer = new Timer();
 			canceled = false;
 			if (hasFinished) {
-				new RunStream()
+				new GetMJPEGData()
 						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				timer.schedule(task, Math.round(1000 / fps));
 			} else {

@@ -90,19 +90,6 @@
             android:text="@string/zero_mb"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
-
-        <ImageButton
-            android:id="@+id/run_test"
-            style="@android:attr/borderlessButtonStyle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/button_manage_cameras"
-            android:background="@color/button_background_dark"
-            android:contentDescription="@string/add_camera"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/content_new_dark" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -73,16 +73,6 @@ public class CameraViewsActivity extends FragmentActivity {
 						RequestCodes.MANAGE_CAMERAS.getNumber());
 			}
 		});
-
-		final Intent intentRunTest = new Intent(this, Test.class);
-		imageButton = (ImageButton) findViewById(R.id.run_test);
-		imageButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivity(intentRunTest);
-			}
-		});
 		imageButton = (ImageButton) findViewById(R.id.button_recreate);
 		imageButton.setOnClickListener(new OnClickListener() {
 
@@ -103,15 +93,6 @@ public class CameraViewsActivity extends FragmentActivity {
 		}
 		initPages();
 		System.err.println("created");
-		// kameryURL.add("http://160.218.184.211:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL.add("http://89.24.105.222:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL.add("http://89.24.105.226:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL.add("http://160.218.189.228:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL.add("http://109.107.218.33:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL.add("http://85.207.84.10:5001/axis-cgi/mjpg/video.cgi?resolution=CIF&camera=1");
-		// kameryURL.add("http://85.207.85.13:5001/video3.mjpg");
-		// kameryURL.add("http://81.25.30.20:5001/video3.mjpg");
-
 		updater = new Timer();
 		updater.scheduleAtFixedRate(new UpdateDataCounter(), 1000, 1000);
 	}
@@ -141,22 +122,8 @@ public class CameraViewsActivity extends FragmentActivity {
 				getSupportFragmentManager(), fragments);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-		/*mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-
-					@Override
-					public void onPageSelected(int arg0) {
-						((CameraGridFragment) fragments.get(visiblePage))
-								.pause();
-						((CameraGridFragment) fragments.get(arg0)).play();
-						visiblePage = arg0;
-					}
-				});*/
+		mViewPager.setAdapter(mSectionsPagerAdapter);		
 		mViewPager.setCurrentItem(visiblePage, true);
-		if (fragments.size() > 0) {
-			//((CameraGridFragment) fragments.get(visiblePage)).play();
-		}
 	}
 
 	@Override
@@ -166,11 +133,7 @@ public class CameraViewsActivity extends FragmentActivity {
 		return true;
 	}
 
-	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 */
-
+	
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		private List<Fragment> fragments;

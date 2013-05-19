@@ -91,16 +91,4 @@ public class CameraGridFragment extends Fragment {
 		}
 		return rootView;
 	}
-
-	@Override
-	public void onStart() {
-		// play();
-		super.onStart();
-	}
-
-	@Override
-	public void onPause() {
-		// pause();
-		super.onPause();
-	}
 }
