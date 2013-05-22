@@ -1,16 +1,16 @@
 package cz.cvut.rutkodan.ipcameramonitor;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import cz.cvut.rutkodan.ipcameramonitor.activities.CameraViewsActivity;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
-import cz.cvut.rutkodan.ipcameramonitor.activities.CameraViewsActivity;
 
 public class CameraStream {
 	private String name;

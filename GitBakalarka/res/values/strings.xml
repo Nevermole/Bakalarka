@@ -27,5 +27,9 @@
     <string name="title_activity_camera_views">CameraViews</string>
     <string name="sample">Příklad</string>
     <string name="url_sample">http:// nebo rtsp:// adresa</string>
+    <string name="camera_connection_error">Nelze se připojit ke kameře</string>
+    <string name="fps">FPS</string>
+    <string name="cols">Sloupce</string>
+    <string name="rows">Řádky</string>
 
 </resources>

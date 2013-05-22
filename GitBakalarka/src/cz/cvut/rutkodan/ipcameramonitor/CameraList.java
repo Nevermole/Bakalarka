@@ -1,9 +1,9 @@
 package cz.cvut.rutkodan.ipcameramonitor;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import cz.cvut.rutkodan.ipcameramonitor.connection.Type;
+
+import java.util.ArrayList;
 
 public class CameraList {
 
@@ -18,7 +18,6 @@ public class CameraList {
 
 	public void add(CameraSettings camera) {
 		cameras.add(camera);
-		saveCameraToDatabase(camera);
 	}
 
 	public void add(CameraSettings[] cameras) {
@@ -26,7 +25,6 @@ public class CameraList {
 			for (CameraSettings cameraSettings : cameras) {
 				if (!this.cameras.contains(cameraSettings)) {
 					this.cameras.add(cameraSettings);
-					saveCameraToDatabase(cameraSettings);
 				}
 			}
 		}
@@ -38,13 +36,9 @@ public class CameraList {
 		CameraSettings cam = new CameraSettings(name, address, height,
 				width, maxFPS);
 		cameras.add(cam);
-		saveCameraToDatabase(cam);
 	}
 
-	private void saveCameraToDatabase(CameraSettings cam) {
-		cameraDatabase.addCameraToDB(cam.getName(), cam.getAddress(),
-				cam.getHeight(), cam.getWidth(), cam.getMaxFPS());
-	}
+
 
 	public CameraSettings[] getAllCameras() {
 		CameraSettings[] cams = new CameraSettings[cameras.size()];

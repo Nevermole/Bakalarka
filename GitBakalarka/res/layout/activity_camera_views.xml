@@ -1,14 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"   
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CameraViewsActivity" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".CameraViewsActivity">
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/menu_bar" >
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/menu_bar" android:background="@android:color/background_dark">
 
         <!--
     This title strip will display the currently visible page title, as well as the page
@@ -16,80 +16,110 @@
         -->
 
         <android.support.v4.view.PagerTitleStrip
-            android:id="@+id/pager_title_strip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="#33b5e5"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:textColor="#fff" />
+                android:id="@+id/pager_title_strip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="#33b5e5"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textColor="#fff"/>
     </android.support.v4.view.ViewPager>
 
     <RelativeLayout
-        android:id="@+id/menu_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:background="@android:color/background_dark" >
-
-        <ImageButton
-            android:id="@+id/button_add_camera"
-            style="@android:attr/borderlessButtonStyle"
-            android:layout_width="48dp"
+            android:id="@+id/menu_bar"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="right"
-            android:background="@color/button_background_dark"
-            android:contentDescription="@string/add_camera"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/content_new_dark" />
+            android:layout_alignParentRight="true"
+            android:background="@android:color/background_dark">
 
         <ImageButton
-            android:id="@+id/button_manage_cameras"
-            style="@android:attr/borderlessButtonStyle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignBaseline="@+id/button_add_camera"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/button_add_camera"
-            android:background="@color/button_background_dark"
-            android:contentDescription="@string/add_camera"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/collections_view_as_list" />
+                android:id="@+id/button_add_camera"
+                style="@android:attr/borderlessButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:background="@color/button_background_dark"
+                android:contentDescription="@string/add_camera"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/content_new_dark"/>
 
         <ImageButton
-            android:id="@+id/button_recreate"
-            style="@android:attr/borderlessButtonStyle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/data_view"
-            android:background="@color/button_background_dark"
-            android:contentDescription="@string/recreate"
-            android:src="@android:drawable/ic_popup_sync" />
+                android:id="@+id/button_manage_cameras"
+                style="@android:attr/borderlessButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignBaseline="@+id/button_add_camera"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/button_add_camera"
+                android:background="@color/button_background_dark"
+                android:contentDescription="@string/add_camera"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/collections_view_as_list"/>
+        <ImageButton
+                android:id="@+id/button_setup_grid"
+                style="@android:attr/borderlessButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignBaseline="@+id/button_add_camera"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/button_manage_cameras"
+                android:background="@color/button_background_dark"
+                android:contentDescription="@string/add_camera"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_setup_grid"/>
+
+        <ImageButton
+                android:id="@+id/button_record"
+                style="@android:attr/borderlessButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignBaseline="@+id/button_add_camera"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/buttonfps"
+                android:background="@color/button_background_dark"
+                android:contentDescription="@string/add_camera"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:visibility="invisible"
+                android:src="@drawable/ic_record"/>
+
 
         <TextView
-            android:id="@+id/data_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:text="@string/zero_mb"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white" />
+                android:id="@+id/data_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:text="@string/zero_mb"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"/>
+        <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@android:color/white"
+                android:text="@string/fps"
+                android:id="@+id/buttonfps"
+                android:layout_centerVertical="true" android:layout_toLeftOf="@+id/data_view"
+                android:background="@color/button_background_transparent"/>
     </RelativeLayout>
 
 </RelativeLayout>
